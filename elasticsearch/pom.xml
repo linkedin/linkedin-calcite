@@ -19,7 +19,7 @@ limitations under the License.
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.apache.calcite</groupId>
+    <groupId>com.linkedin.calcite</groupId>
     <artifactId>calcite</artifactId>
     <version>1.22.0-SNAPSHOT</version>
   </parent>
@@ -40,12 +40,12 @@ limitations under the License.
       <artifactId>guava</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.calcite</groupId>
+      <groupId>com.linkedin.calcite</groupId>
       <artifactId>calcite-core</artifactId>
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>org.apache.calcite</groupId>
+      <groupId>com.linkedin.calcite</groupId>
       <artifactId>calcite-core</artifactId>
       <type>test-jar</type>
       <scope>test</scope>
@@ -78,7 +78,7 @@ limitations under the License.
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.calcite</groupId>
+      <groupId>com.linkedin.calcite</groupId>
       <artifactId>calcite-linq4j</artifactId>
     </dependency>
     <dependency>

@@ -1,0 +1,6 @@
+REPOSITORY = "apache calcite"
+REVIEWBOARD_URL='https://rb.corp.linkedin.com'
+GUESS_FIELDS='yes'
+OPEN_BROWSER='true'
+BRANCH='li-1.21.0'
+TRACKING_BRANCH='origin/li-1.21.0'
