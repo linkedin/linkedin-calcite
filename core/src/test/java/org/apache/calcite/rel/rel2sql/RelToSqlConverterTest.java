@@ -3698,6 +3698,24 @@ public class RelToSqlConverterTest {
     sql(query).ok(expected);
   }
 
+  @Test public void testLateralJoin() {
+    final String sql = "select d.\"department_id\", d_plusOne, d_plusTen, d.\"department_description\" "
+        + "from \"department\" as d, "
+        + "       lateral (select d.\"department_id\" + 1 as d_plusOne"
+        + "                from (values(true))), "
+        + "        lateral (select d.\"department_id\" + 10 as d_plusTen"
+        + "                from (values(true)))";
+
+    final String expected = "SELECT \"$cor1\".\"department_id\", \"$cor1\".\"D_PLUSONE\", "
+        + "\"$cor1\".\"D_PLUSTEN\", \"$cor1\".\"department_description\"\n"
+        + "FROM (\"foodmart\".\"department\" AS \"$cor0\",\n"
+        + "LATERAL (SELECT \"$cor0\".\"department_id\" + 1 AS \"D_PLUSONE\"\n"
+        + "FROM (VALUES  (TRUE)) AS \"t\" (\"EXPR$0\")) AS \"t0\") AS \"$cor1\",\n"
+        + "LATERAL (SELECT \"$cor1\".\"department_id\" + 10 AS \"D_PLUSTEN\"\n"
+        + "FROM (VALUES  (TRUE)) AS \"t\" (\"EXPR$0\")) AS \"t2\"";
+    sql(sql).ok(expected);
+  }
+
   @Test public void testSmallintOracle() {
     String query = "SELECT CAST(\"department_id\" AS SMALLINT) FROM \"employee\"";
     String expected = "SELECT CAST(\"department_id\" AS NUMBER(5))\n"

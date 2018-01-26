@@ -193,7 +193,7 @@ public abstract class SqlImplementor {
    * @param leftFieldCount  Number of fields on left result
    * @return SqlNode that represents the condition
    */
-  public static SqlNode convertConditionToSqlNode(RexNode node,
+  public SqlNode convertConditionToSqlNode(RexNode node,
       Context leftContext,
       Context rightContext, int leftFieldCount) {
     if (node.isAlwaysTrue()) {
@@ -237,7 +237,7 @@ public abstract class SqlImplementor {
     case LESS_THAN:
     case LESS_THAN_OR_EQUAL:
     case LIKE:
-      node = stripCastFromString(node);
+      node = stripCastFromString(node, dialect);
       operands = ((RexCall) node).getOperands();
       op = ((RexCall) node).getOperator();
       if (operands.size() == 2
@@ -291,7 +291,10 @@ public abstract class SqlImplementor {
    * <p>For example, {@code x > CAST('2015-01-07' AS DATE)}
    * becomes {@code x > '2015-01-07'}.
    */
-  private static RexNode stripCastFromString(RexNode node) {
+  protected static RexNode stripCastFromString(RexNode node, SqlDialect dialect) {
+    if (dialect.requireCastOnString()) {
+      return node;
+    }
     switch (node.getKind()) {
     case EQUALS:
     case IS_NOT_DISTINCT_FROM:
@@ -659,7 +662,7 @@ public abstract class SqlImplementor {
           return toSql(program, (RexOver) rex);
         }
 
-        final RexCall call = (RexCall) stripCastFromString(rex);
+        final RexCall call = (RexCall) stripCastFromString(rex, dialect);
         SqlOperator op = call.getOperator();
         switch (op.getKind()) {
         case SUM0:

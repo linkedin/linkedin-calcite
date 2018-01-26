@@ -606,6 +606,13 @@ public class SqlDialect {
     return false;
   }
 
+  /**
+   * Returns true if cast on string column is needed
+   */
+  public boolean requireCastOnString() {
+    return false;
+  }
+
   /** Returns whether a qualified table in the FROM clause has an implicit alias
    * which consists of just the table name.
    *
