@@ -68,6 +68,7 @@ public class SqlRowTypeNameSpec extends SqlTypeNameSpec {
     Objects.requireNonNull(fieldNames);
     Objects.requireNonNull(fieldTypes);
     assert fieldNames.size() > 0; // there must be at least one field.
+    assert fieldNames.size() == fieldTypes.size();
     this.fieldNames = fieldNames;
     this.fieldTypes = fieldTypes;
   }

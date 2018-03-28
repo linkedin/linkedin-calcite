@@ -23,11 +23,15 @@ import org.apache.calcite.rel.type.RelDataTypeField;
 import org.apache.calcite.rel.type.RelDataTypeFieldImpl;
 import org.apache.calcite.rex.RexUtil;
 import org.apache.calcite.sql.SqlBasicTypeNameSpec;
+import org.apache.calcite.sql.SqlArrayTypeSpec;
 import org.apache.calcite.sql.SqlCall;
 import org.apache.calcite.sql.SqlCallBinding;
 import org.apache.calcite.sql.SqlCollation;
 import org.apache.calcite.sql.SqlDataTypeSpec;
+import org.apache.calcite.sql.SqlIdentifier;
+import org.apache.calcite.sql.SqlMapTypeSpec;
 import org.apache.calcite.sql.SqlNode;
+import org.apache.calcite.sql.SqlRowTypeSpec;
 import org.apache.calcite.sql.parser.SqlParserPos;
 import org.apache.calcite.sql.validate.SqlNameMatcher;
 import org.apache.calcite.sql.validate.SqlValidator;
@@ -1019,6 +1023,25 @@ public abstract class SqlTypeUtil {
    */
   public static SqlDataTypeSpec convertTypeToSpec(RelDataType type,
       String charSetName, int maxPrecision) {
+    if (type.isStruct()) {
+      List<String> fieldNames = type.getFieldNames();
+      ImmutableList.Builder<SqlDataTypeSpec> typeListBuilder = ImmutableList.builder();
+      for (RelDataTypeField field : type.getFieldList()) {
+        SqlDataTypeSpec typeSpec = convertTypeToSpec(field.getType());
+        typeListBuilder.add(typeSpec);
+      }
+      return new SqlRowTypeSpec(fieldNames, typeListBuilder.build(), type.isNullable(), SqlParserPos.ZERO);
+    }
+
+    if (type.getSqlTypeName() == SqlTypeName.ARRAY) {
+      return new SqlArrayTypeSpec(convertTypeToSpec(type.getComponentType()), type.isNullable(), SqlParserPos.ZERO);
+    }
+
+    if (type.getSqlTypeName() == SqlTypeName.MAP) {
+      return new SqlMapTypeSpec(convertTypeToSpec(type.getKeyType()), convertTypeToSpec(type.getValueType()),
+          type.isNullable(), SqlParserPos.ZERO);
+    }
+
     SqlTypeName typeName = type.getSqlTypeName();
 
     // TODO jvs 28-Dec-2004:  support row types, user-defined types,
