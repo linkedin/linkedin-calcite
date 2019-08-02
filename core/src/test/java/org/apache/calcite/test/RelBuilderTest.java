@@ -41,6 +41,7 @@ import org.apache.calcite.rex.RexCorrelVariable;
 import org.apache.calcite.rex.RexInputRef;
 import org.apache.calcite.rex.RexNode;
 import org.apache.calcite.runtime.CalciteException;
+import org.apache.calcite.runtime.Hook;
 import org.apache.calcite.schema.SchemaPlus;
 import org.apache.calcite.schema.impl.ViewTable;
 import org.apache.calcite.schema.impl.ViewTableMacro;
@@ -279,6 +280,23 @@ public class RelBuilderTest {
             .build();
     assertThat(root,
         hasTree("LogicalValues(tuples=[[]])\n"));
+  }
+
+  @Test public void testScanFilterTriviallyFalseWithoutSimplify() {
+    // Equivalent SQL:
+    //   SELECT *
+    //   FROM emp
+    //   WHERE 1 = 2
+    Hook.REL_BUILDER_FALSE_FILTER_SIMPLIFY.add(Hook.propertyJ(false));
+    final RelBuilder builder = RelBuilder.create(config().build());
+    RelNode root =
+        builder.scan("EMP")
+            .filter(builder.equals(builder.literal(1), builder.literal(2)))
+            .build();
+    final String expected = "LogicalFilter(condition=[=(1, 2)])\n"
+        + "  LogicalTableScan(table=[[scott, EMP]])\n";
+    assertThat(root, hasTree(expected));
+    Hook.REL_BUILDER_FALSE_FILTER_SIMPLIFY.add(Hook.propertyJ(true));
   }
 
   @Test public void testScanFilterEquals() {

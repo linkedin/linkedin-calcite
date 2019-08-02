@@ -43,6 +43,10 @@ public enum Hook {
    * Default true. */
   REL_BUILDER_SIMPLIFY,
 
+  /** Returns a boolean value, whether RelBuilder should simplify filters with the conditions
+   * of always false. Default true. */
+  REL_BUILDER_FALSE_FILTER_SIMPLIFY,
+
   /** Returns a boolean value, whether the return convention should be
    * {@link org.apache.calcite.interpreter.BindableConvention}.
    * Default false. */

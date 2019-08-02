@@ -159,6 +159,7 @@ public class RelBuilder {
   private final Deque<Frame> stack = new ArrayDeque<>();
   private final RexSimplify simplifier;
   private final Config config;
+  private final boolean simplifyFalseFilter;
 
   protected RelBuilder(Context context, RelOptCluster cluster,
       RelOptSchema relOptSchema) {
@@ -168,6 +169,7 @@ public class RelBuilder {
       context = Contexts.EMPTY_CONTEXT;
     }
     this.config = getConfig(context);
+    this.simplifyFalseFilter = Hook.REL_BUILDER_FALSE_FILTER_SIMPLIFY.get(true);
     this.aggregateFactory =
         Util.first(context.unwrap(RelFactories.AggregateFactory.class),
             RelFactories.DEFAULT_AGGREGATE_FACTORY);
@@ -1208,10 +1210,12 @@ public class RelBuilder {
    * If the result is TRUE no filter is created. */
   public RelBuilder filter(Iterable<CorrelationId> variablesSet,
       Iterable<? extends RexNode> predicates) {
-    final RexNode simplifiedPredicates =
-        simplifier.simplifyFilterPredicates(predicates);
+    RexNode simplifiedPredicates = simplifier.simplifyFilterPredicates(predicates);
     if (simplifiedPredicates == null) {
-      return empty();
+      if (simplifyFalseFilter) {
+        return empty();
+      }
+      simplifiedPredicates = and(predicates);
     }
 
     if (!simplifiedPredicates.isAlwaysTrue()) {
