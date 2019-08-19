@@ -509,8 +509,10 @@ public abstract class SqlImplementor {
               .field(lastAccess.getField().getIndex());
           break;
         case ROW:
+        case CAST:
+        case OTHER_FUNCTION:
           final SqlNode expr = toSql(program, referencedExpr);
-          sqlIdentifier = new SqlIdentifier(expr.toString(), POS);
+          sqlIdentifier = new SqlIdentifier(expr.toSqlString(dialect).getSql(), POS);
           break;
         default:
           sqlIdentifier = (SqlIdentifier) toSql(program, referencedExpr);
