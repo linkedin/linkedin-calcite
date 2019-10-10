@@ -79,7 +79,33 @@ public class SqlBasicTypeNameSpec extends SqlTypeNameSpec {
   private String charSetName;
 
   /**
-   * Create a basic sql type name specification.
+   * Creates a basic sql type name specification with a custom string type name
+   * (like type name "STRING" for CHAR/VARCHAR type).
+   *
+   * @param typeNameStr Type name string
+   * @param typeName    Type name.
+   * @param precision   Precision of the type name if it is allowed, default is -1.
+   * @param scale       Scale of the type name if it is allowed, default is -1.
+   * @param charSetName Char set of the type, only works when the type
+   *                    belong to CHARACTER type family.
+   * @param pos         The parser position.
+   */
+  public SqlBasicTypeNameSpec(
+      String typeNameStr,
+      SqlTypeName typeName,
+      int precision,
+      int scale,
+      @Nullable String charSetName,
+      SqlParserPos pos) {
+    super(new SqlIdentifier(typeNameStr, pos), pos);
+    this.sqlTypeName = typeName;
+    this.precision = precision;
+    this.scale = scale;
+    this.charSetName = charSetName;
+  }
+
+  /**
+   * Creates a basic sql type name specification.
    * @param typeName    Type name.
    * @param precision   Precision of the type name if it is allowed, default is -1.
    * @param scale       Scale of the type name if it is allowed, default is -1.
@@ -93,11 +119,7 @@ public class SqlBasicTypeNameSpec extends SqlTypeNameSpec {
       int scale,
       @Nullable String charSetName,
       SqlParserPos pos) {
-    super(new SqlIdentifier(typeName.name(), pos), pos);
-    this.sqlTypeName = typeName;
-    this.precision = precision;
-    this.scale = scale;
-    this.charSetName = charSetName;
+    this(typeName.name(), typeName, precision, scale, charSetName, pos);
   }
 
   public SqlBasicTypeNameSpec(SqlTypeName typeName, SqlParserPos pos) {
