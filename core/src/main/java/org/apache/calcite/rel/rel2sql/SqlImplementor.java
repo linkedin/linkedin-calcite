@@ -1062,11 +1062,11 @@ public abstract class SqlImplementor {
 
   /** Result of implementing a node. */
   public class Result {
-    final SqlNode node;
-    final String neededAlias;
-    private final RelDataType neededType;
-    private final Map<String, RelDataType> aliases;
-    final Expressions.FluentList<Clause> clauses;
+    public final SqlNode node;
+    public final String neededAlias;
+    public final RelDataType neededType;
+    public final Map<String, RelDataType> aliases;
+    public final Expressions.FluentList<Clause> clauses;
 
     public Result(SqlNode node, Collection<Clause> clauses, String neededAlias,
         RelDataType neededType, Map<String, RelDataType> aliases) {
