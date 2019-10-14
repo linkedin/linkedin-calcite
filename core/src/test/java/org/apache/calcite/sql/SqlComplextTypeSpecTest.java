@@ -75,15 +75,30 @@ public class SqlComplextTypeSpecTest {
   @Test
   public void testUnparseMultipleComplex() {
     RelDataTypeFactory typeFactory = createTypeFactory();
+    RelDataType colArr = typeFactory.createArrayType(INT_TYPE, -1);
+    RelDataType colArrNullable = typeFactory.createTypeWithNullability(colArr, true);
+    RelDataType colMap = typeFactory.createMapType(VARCHAR_TYPE, DATE_TYPE);
+    RelDataType colMapNullable = typeFactory.createTypeWithNullability(colMap, true);
+    RelDataType colRow = typeFactory.createStructType(
+        ImmutableList.of(DATE_TYPE, VARCHAR_TYPE),
+        ImmutableList.of("s_dateCol", "s_stringCol"));
+    RelDataType colRowNullable = typeFactory.createTypeWithNullability(colRow, true);
     RelDataType rowType = typeFactory.createStructType(
-        ImmutableList.of(INT_TYPE,
-            typeFactory.createArrayType(INT_TYPE, -1),
-            typeFactory.createMapType(VARCHAR_TYPE, DATE_TYPE)),
-        ImmutableList.of("colA", "colArr", "colMap"));
+        ImmutableList.of(INT_TYPE, colArr, colArrNullable, colMap, colMapNullable, colRow,
+            colRowNullable),
+        ImmutableList.of("colA", "colArr", "colArrNullable", "colMap", "colMapNullable", "colRow",
+            "colRowNullable"));
     String converted = toSqlString(rowType);
-    Assert.assertEquals(
-        "ROW(\"colA\" INTEGER, \"colArr\" ARRAY<INTEGER>, \"colMap\" MAP<VARCHAR, DATE>)",
-        converted);
+    String expected =
+        "ROW("
+            + "\"colA\" INTEGER, "
+            + "\"colArr\" ARRAY<INTEGER>, "
+            + "\"colArrNullable\" ARRAY<INTEGER>, "
+            + "\"colMap\" MAP<VARCHAR, DATE>, "
+            + "\"colMapNullable\" MAP<VARCHAR, DATE>, "
+            + "\"colRow\" ROW(\"s_dateCol\" DATE, \"s_stringCol\" VARCHAR), "
+            + "\"colRowNullable\" ROW(\"s_dateCol\" DATE, \"s_stringCol\" VARCHAR))";
+    Assert.assertEquals(expected, converted);
   }
 
   private String toSqlString(RelDataType rowType) {

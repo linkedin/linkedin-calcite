@@ -22,11 +22,17 @@ import java.util.Objects;
 
 
 public class SqlMapTypeSpec extends SqlDataTypeSpec {
+
+  public SqlMapTypeSpec(SqlDataTypeSpec keyType, SqlDataTypeSpec valType, SqlParserPos pos) {
+    this(keyType, valType, null, pos);
+  }
+
   public SqlMapTypeSpec(SqlDataTypeSpec keyType, SqlDataTypeSpec valType,
-      boolean nullable, SqlParserPos pos) {
+      Boolean nullable, SqlParserPos pos) {
     this(new SqlMapTypeNameSpec(pos, keyType, valType), nullable, pos);
   }
-  private SqlMapTypeSpec(SqlMapTypeNameSpec mapTypeNameSpec, boolean nullable, SqlParserPos pos) {
+
+  private SqlMapTypeSpec(SqlMapTypeNameSpec mapTypeNameSpec, Boolean nullable, SqlParserPos pos) {
     super(mapTypeNameSpec, null, nullable, pos);
   }
 

@@ -22,13 +22,12 @@ import org.apache.calcite.rel.type.RelDataTypeFamily;
 import org.apache.calcite.rel.type.RelDataTypeField;
 import org.apache.calcite.rel.type.RelDataTypeFieldImpl;
 import org.apache.calcite.rex.RexUtil;
-import org.apache.calcite.sql.SqlBasicTypeNameSpec;
 import org.apache.calcite.sql.SqlArrayTypeSpec;
+import org.apache.calcite.sql.SqlBasicTypeNameSpec;
 import org.apache.calcite.sql.SqlCall;
 import org.apache.calcite.sql.SqlCallBinding;
 import org.apache.calcite.sql.SqlCollation;
 import org.apache.calcite.sql.SqlDataTypeSpec;
-import org.apache.calcite.sql.SqlIdentifier;
 import org.apache.calcite.sql.SqlMapTypeSpec;
 import org.apache.calcite.sql.SqlNode;
 import org.apache.calcite.sql.SqlRowTypeSpec;
@@ -1030,16 +1029,16 @@ public abstract class SqlTypeUtil {
         SqlDataTypeSpec typeSpec = convertTypeToSpec(field.getType());
         typeListBuilder.add(typeSpec);
       }
-      return new SqlRowTypeSpec(fieldNames, typeListBuilder.build(), type.isNullable(), SqlParserPos.ZERO);
+      return new SqlRowTypeSpec(fieldNames, typeListBuilder.build(), SqlParserPos.ZERO);
     }
 
     if (type.getSqlTypeName() == SqlTypeName.ARRAY) {
-      return new SqlArrayTypeSpec(convertTypeToSpec(type.getComponentType()), type.isNullable(), SqlParserPos.ZERO);
+      return new SqlArrayTypeSpec(convertTypeToSpec(type.getComponentType()), SqlParserPos.ZERO);
     }
 
     if (type.getSqlTypeName() == SqlTypeName.MAP) {
-      return new SqlMapTypeSpec(convertTypeToSpec(type.getKeyType()), convertTypeToSpec(type.getValueType()),
-          type.isNullable(), SqlParserPos.ZERO);
+      return new SqlMapTypeSpec(convertTypeToSpec(type.getKeyType()),
+          convertTypeToSpec(type.getValueType()), SqlParserPos.ZERO);
     }
 
     SqlTypeName typeName = type.getSqlTypeName();

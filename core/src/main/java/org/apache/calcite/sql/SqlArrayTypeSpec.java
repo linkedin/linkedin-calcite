@@ -29,7 +29,11 @@ public class SqlArrayTypeSpec extends SqlDataTypeSpec {
 
   private final SqlDataTypeSpec typeSpec;
 
-  public SqlArrayTypeSpec(SqlDataTypeSpec type, boolean nullable, SqlParserPos pos) {
+  public SqlArrayTypeSpec(SqlDataTypeSpec type, SqlParserPos pos) {
+    this(type, null, pos);
+  }
+
+  public SqlArrayTypeSpec(SqlDataTypeSpec type, Boolean nullable, SqlParserPos pos) {
     super(new SqlCollectionTypeNameSpec(type.getTypeNameSpec(), SqlTypeName.ARRAY, pos),
         null, nullable, pos);
     this.typeSpec = type;

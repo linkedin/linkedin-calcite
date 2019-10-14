@@ -29,12 +29,18 @@ import java.util.Objects;
 public class SqlRowTypeSpec extends SqlDataTypeSpec {
 
   public SqlRowTypeSpec(List<String> fieldNames, List<SqlDataTypeSpec> fieldTypeSpecs,
-      boolean nullable, SqlParserPos pos) {
+      SqlParserPos pos) {
+    this(new SqlRowTypeNameSpec(pos, toIdentifierList(fieldNames, pos), fieldTypeSpecs),
+        null, pos);
+  }
+
+  public SqlRowTypeSpec(List<String> fieldNames, List<SqlDataTypeSpec> fieldTypeSpecs,
+      Boolean nullable, SqlParserPos pos) {
     this(new SqlRowTypeNameSpec(pos, toIdentifierList(fieldNames, pos), fieldTypeSpecs),
         nullable, pos);
   }
 
-  private SqlRowTypeSpec(SqlRowTypeNameSpec rowTypeNameSpec, boolean nullable, SqlParserPos pos) {
+  private SqlRowTypeSpec(SqlRowTypeNameSpec rowTypeNameSpec, Boolean nullable, SqlParserPos pos) {
     super(rowTypeNameSpec, null, nullable, pos);
   }
 
