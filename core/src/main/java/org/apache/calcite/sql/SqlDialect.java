@@ -903,6 +903,10 @@ public class SqlDialect {
     }
   }
 
+  protected final void unparseIdentifier(SqlWriter writer, SqlIdentifier identifier) {
+    SqlUtil.unparseSqlIdentifierSyntax(writer, identifier, false);
+  }
+
   /**
    * Returns whether the dialect supports nested aggregations, for instance
    * {@code SELECT SUM(SUM(1)) }.
