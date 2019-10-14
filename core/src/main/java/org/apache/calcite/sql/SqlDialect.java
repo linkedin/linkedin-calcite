@@ -903,7 +903,7 @@ public class SqlDialect {
     }
   }
 
-  protected final void unparseIdentifier(SqlWriter writer, SqlIdentifier identifier) {
+  public void unparseIdentifier(SqlWriter writer, SqlIdentifier identifier) {
     SqlUtil.unparseSqlIdentifierSyntax(writer, identifier, false);
   }
 
