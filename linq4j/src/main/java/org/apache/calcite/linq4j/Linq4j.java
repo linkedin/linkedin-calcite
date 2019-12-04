@@ -668,20 +668,25 @@ public abstract class Linq4j {
   private static class EnumeratorIterator<T>
       implements Iterator<T>, AutoCloseable {
     private final Enumerator<T> enumerator;
-    boolean hasNext;
+    Boolean hasNext = null;
 
     EnumeratorIterator(Enumerator<T> enumerator) {
       this.enumerator = enumerator;
-      hasNext = enumerator.moveNext();
     }
 
     public boolean hasNext() {
+      if (hasNext == null) {
+        hasNext = enumerator.moveNext();
+      }
       return hasNext;
     }
 
     public T next() {
+      if (!hasNext()) {
+        throw new NoSuchElementException("There are no more elements to return");
+      }
       T t = enumerator.current();
-      hasNext = enumerator.moveNext();
+      hasNext = null;
       return t;
     }
 
