@@ -216,7 +216,6 @@ public class RexLiteral extends RexNode {
     Preconditions.checkArgument(valueMatchesType(value, typeName, true));
     Preconditions.checkArgument((value == null) == type.isNullable());
     Preconditions.checkArgument(typeName != SqlTypeName.ANY);
-    this.digest = computeDigest(RexDigestIncludeType.OPTIONAL);
   }
 
   //~ Methods ----------------------------------------------------------------
@@ -270,6 +269,11 @@ public class RexLiteral extends RexNode {
     }
 
     return toJavaString(value, typeName, type, includeType);
+  }
+
+  @Override
+  public String toString() {
+   return digest = computeDigest(RexDigestIncludeType.OPTIONAL);
   }
 
   /**

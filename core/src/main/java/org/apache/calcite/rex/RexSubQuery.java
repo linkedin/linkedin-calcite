@@ -42,7 +42,6 @@ public class RexSubQuery extends RexCall {
       ImmutableList<RexNode> operands, RelNode rel) {
     super(type, op, operands);
     this.rel = rel;
-    this.digest = computeDigest(false);
   }
 
   /** Creates an IN sub-query. */
