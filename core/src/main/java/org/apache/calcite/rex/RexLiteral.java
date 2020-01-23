@@ -273,7 +273,10 @@ public class RexLiteral extends RexNode {
 
   @Override
   public String toString() {
-   return digest = computeDigest(RexDigestIncludeType.OPTIONAL);
+    if (digest == null) {
+      digest = computeDigest(RexDigestIncludeType.OPTIONAL);
+    }
+    return digest;
   }
 
   /**
