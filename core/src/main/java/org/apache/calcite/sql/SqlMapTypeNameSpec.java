@@ -23,6 +23,10 @@ import org.apache.calcite.sql.type.SqlTypeName;
 import org.apache.calcite.sql.validate.SqlValidator;
 import org.apache.calcite.util.Litmus;
 
+
+/**
+ * Class to capture SQL map type name specification.
+ */
 public class SqlMapTypeNameSpec extends SqlTypeNameSpec {
   private final SqlDataTypeSpec keyTypeSpec;
   private final SqlDataTypeSpec valTypeSpec;
@@ -53,7 +57,7 @@ public class SqlMapTypeNameSpec extends SqlTypeNameSpec {
 
   @Override public void unparse(SqlWriter writer, int leftPrec, int rightPrec) {
     writer.keyword(getTypeName().getSimple());
-    final SqlWriter.Frame frame = writer.startList(SqlWriter.FrameTypeEnum.FUN_CALL,"<", ">");
+    final SqlWriter.Frame frame = writer.startList(SqlWriter.FrameTypeEnum.FUN_CALL, "<", ">");
     writer.setNeedWhitespace(false);
     keyTypeSpec.unparse(writer, leftPrec, rightPrec);
     writer.sep(",", true);

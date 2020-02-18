@@ -43,21 +43,18 @@ public class SqlArrayTypeSpec extends SqlDataTypeSpec {
     return typeSpec;
   }
 
-  @Override
-  public SqlNode clone(SqlParserPos pos) {
+  @Override public SqlNode clone(SqlParserPos pos) {
     return new SqlArrayTypeSpec(this.typeSpec, getNullable(), pos);
   }
 
-  @Override
-  public SqlDataTypeSpec withNullable(Boolean nullable) {
+  @Override public SqlDataTypeSpec withNullable(Boolean nullable) {
     if (Objects.equals(getNullable(), nullable)) {
       return this;
     }
     return new SqlArrayTypeSpec(typeSpec, getNullable(), getParserPosition());
   }
 
-  @Override
-  public void unparse(SqlWriter writer, int leftPrec, int rightPrec) {
+  @Override public void unparse(SqlWriter writer, int leftPrec, int rightPrec) {
     writer.keyword(getTypeName().getSimple());
     SqlWriter.Frame frame = writer.startList(SqlWriter.FrameTypeEnum.FUN_CALL, "<", ">");
     writer.setNeedWhitespace(false);
@@ -67,4 +64,4 @@ public class SqlArrayTypeSpec extends SqlDataTypeSpec {
   }
 }
 
-// End SqlMapTypeSpec.java
+// End SqlArrayTypeSpec.java

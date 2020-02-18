@@ -3699,7 +3699,11 @@ public class RelToSqlConverterTest {
   }
 
   @Test public void testLateralJoin() {
-    final String sql = "select d.\"department_id\", d_plusOne, d_plusTen, d.\"department_description\" "
+    final String sql = "select "
+        + "d.\"department_id\", "
+        + "d_plusOne, "
+        + "d_plusTen, "
+        + "d.\"department_description\" "
         + "from \"department\" as d, "
         + "       lateral (select d.\"department_id\" + 1 as d_plusOne"
         + "                from (values(true))), "

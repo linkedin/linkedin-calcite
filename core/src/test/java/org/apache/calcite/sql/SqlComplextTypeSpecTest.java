@@ -20,7 +20,6 @@ import org.apache.calcite.config.NullCollation;
 import org.apache.calcite.rel.type.RelDataType;
 import org.apache.calcite.rel.type.RelDataTypeFactory;
 import org.apache.calcite.rel.type.RelDataTypeField;
-import org.apache.calcite.sql.dialect.CalciteSqlDialect;
 import org.apache.calcite.sql.parser.SqlParserPos;
 import org.apache.calcite.sql.pretty.SqlPrettyWriter;
 import org.apache.calcite.sql.type.SqlTypeName;
@@ -36,6 +35,9 @@ import java.util.List;
 import static org.apache.calcite.sql.type.SqlTypeUtil.convertTypeToSpec;
 
 
+/**
+ * Tests for SqlComplextTypeSpec
+ */
 public class SqlComplextTypeSpecTest {
   private static final RelDataTypeFactory TYPE_FACTORY;
   private static final RelDataType INT_TYPE;
@@ -109,7 +111,10 @@ public class SqlComplextTypeSpecTest {
       typeListBuilder.add(typeSpec);
     }
 
-    SqlRowTypeSpec spec = new SqlRowTypeSpec(names, typeListBuilder.build(), false, SqlParserPos.ZERO);
+    SqlRowTypeSpec spec = new SqlRowTypeSpec(names,
+        typeListBuilder.build(),
+        false,
+        SqlParserPos.ZERO);
     SqlWriter writer = new SqlPrettyWriter(SQL_DIALECT);
 
     spec.unparse(writer, 1, 1);

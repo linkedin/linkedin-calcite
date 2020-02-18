@@ -68,13 +68,11 @@ public class SqlRowTypeSpec extends SqlDataTypeSpec {
     return ((SqlRowTypeNameSpec) getTypeNameSpec()).getFieldTypes();
   }
 
-  @Override
-  public SqlNode clone(SqlParserPos pos) {
+  @Override public SqlNode clone(SqlParserPos pos) {
     return new SqlRowTypeSpec((SqlRowTypeNameSpec) getTypeNameSpec(), getNullable(), pos);
   }
 
-  @Override
-  public SqlDataTypeSpec withNullable(Boolean nullable) {
+  @Override public SqlDataTypeSpec withNullable(Boolean nullable) {
     if (Objects.equals(getNullable(), nullable)) {
       return this;
     }
@@ -82,8 +80,7 @@ public class SqlRowTypeSpec extends SqlDataTypeSpec {
         getParserPosition());
   }
 
-  @Override
-  public void unparse(SqlWriter writer, int leftPrec, int rightPrec) {
+  @Override public void unparse(SqlWriter writer, int leftPrec, int rightPrec) {
     getTypeNameSpec().unparse(writer, leftPrec, rightPrec);
   }
 }

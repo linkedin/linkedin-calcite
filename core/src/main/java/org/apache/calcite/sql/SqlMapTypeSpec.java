@@ -21,6 +21,9 @@ import org.apache.calcite.sql.parser.SqlParserPos;
 import java.util.Objects;
 
 
+/**
+ * Class to capture SQL map type specification.
+ */
 public class SqlMapTypeSpec extends SqlDataTypeSpec {
 
   public SqlMapTypeSpec(SqlDataTypeSpec keyType, SqlDataTypeSpec valType, SqlParserPos pos) {
@@ -44,14 +47,12 @@ public class SqlMapTypeSpec extends SqlDataTypeSpec {
     return ((SqlMapTypeNameSpec) getTypeNameSpec()).getValTypeSpec();
   }
 
-  @Override
-  public SqlNode clone(SqlParserPos pos) {
+  @Override public SqlNode clone(SqlParserPos pos) {
     return new SqlMapTypeSpec((SqlMapTypeNameSpec) getTypeNameSpec(),
         getNullable(), getParserPosition());
   }
 
-  @Override
-  public SqlDataTypeSpec withNullable(Boolean nullable) {
+  @Override public SqlDataTypeSpec withNullable(Boolean nullable) {
     if (Objects.equals(getNullable(), nullable)) {
       return this;
     }
@@ -59,8 +60,7 @@ public class SqlMapTypeSpec extends SqlDataTypeSpec {
         getParserPosition());
   }
 
-  @Override
-  public void unparse(SqlWriter writer, int leftPrec, int rightPrec) {
+  @Override public void unparse(SqlWriter writer, int leftPrec, int rightPrec) {
     getTypeNameSpec().unparse(writer, leftPrec, rightPrec);
   }
 }
