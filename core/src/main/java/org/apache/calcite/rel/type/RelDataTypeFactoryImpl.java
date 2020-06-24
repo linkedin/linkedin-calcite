@@ -17,6 +17,7 @@
 package org.apache.calcite.rel.type;
 
 import org.apache.calcite.linq4j.tree.Primitive;
+import org.apache.calcite.runtime.Hook;
 import org.apache.calcite.sql.SqlCollation;
 import org.apache.calcite.sql.type.JavaToSqlTypeConversionRules;
 import org.apache.calcite.sql.type.SqlTypeFamily;
@@ -53,10 +54,18 @@ public abstract class RelDataTypeFactoryImpl implements RelDataTypeFactory {
   /**
    * Global cache for Key to RelDataType. Uses soft values to allow GC.
    */
-  private static final LoadingCache<Key, RelDataType> KEY2TYPE_CACHE =
-      CacheBuilder.newBuilder()
-          .softValues()
-          .build(CacheLoader.from(RelDataTypeFactoryImpl::keyToType));
+  private static final LoadingCache<Key, RelDataType> KEY2TYPE_CACHE;
+  private static final long KEY2TYPE_CACHE_MAX_SIZE;
+  static {
+    CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder();
+    KEY2TYPE_CACHE_MAX_SIZE = Hook.REL_DATA_TYPE_CACHE_SIZE.get(-1L);
+    if (KEY2TYPE_CACHE_MAX_SIZE != -1L) {
+      cacheBuilder.maximumSize(KEY2TYPE_CACHE_MAX_SIZE);
+    }
+    KEY2TYPE_CACHE = cacheBuilder
+        .softValues()
+        .build(CacheLoader.from(RelDataTypeFactoryImpl::keyToType));
+  }
 
   /**
    * Global cache for RelDataType.
@@ -108,6 +117,11 @@ public abstract class RelDataTypeFactoryImpl implements RelDataTypeFactory {
   }
 
   //~ Methods ----------------------------------------------------------------
+
+  // return the size limit of KEY2TYPE_CACHE, -1L means no size limit.
+  public static long getKey2typeCacheMaxSize() {
+    return KEY2TYPE_CACHE_MAX_SIZE;
+  }
 
   public RelDataTypeSystem getTypeSystem() {
     return typeSystem;
