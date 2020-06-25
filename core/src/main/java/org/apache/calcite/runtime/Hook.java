@@ -47,6 +47,15 @@ public enum Hook {
    * of always false. Default true. */
   REL_BUILDER_FALSE_FILTER_SIMPLIFY,
 
+  /** Returns a long value, which is the maximum size of the global {@code KEY2TYPE_CACHE} in
+   * {@link org.apache.calcite.rel.type.RelDataTypeFactoryImpl}.
+   * Default -1L, means unlimited size.
+   *
+   * Note: Since {@code KEY2TYPE_CACHE} is a static global cache, this hook will only works when
+   * setting its value BEFORE any instance of
+   * {@link org.apache.calcite.rel.type.RelDataTypeFactoryImpl} is created or accessed. */
+  REL_DATA_TYPE_CACHE_SIZE,
+
   /** Returns a boolean value, whether the return convention should be
    * {@link org.apache.calcite.interpreter.BindableConvention}.
    * Default false. */
