@@ -27,7 +27,15 @@ limitations under the License.
   <groupId>com.linkedin.calcite</groupId>
   <artifactId>calcite</artifactId>
   <packaging>pom</packaging>
-  <version>1.22.0-SNAPSHOT</version>
+  <version>1.22.0-4a560df4f</version>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <!-- More project information. -->
   <name>Calcite</name>
@@ -46,6 +54,7 @@ limitations under the License.
   </mailingLists>
 
   <properties>
+    <calciteVersion>1.22.0</calciteVersion>
     <!-- Ensure that source and target version are overridden from base ASF POM.
          This is also used by forbiddenapis to ensure correct signatures are loaded. -->
     <maven.compiler.source>8</maven.compiler.source>

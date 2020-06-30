@@ -24,3 +24,13 @@ limitations under the License.
 Apache Calcite is a dynamic data management framework.
 
 For more details, see the [home page](http://calcite.apache.org).
+
+# Deploying to LinkedIn maven respository
+
+To deploy to LinkedIn's maven repository, run
+
+```
+sh .lipublish/publish.sh
+```
+
+You will need a [JFrog Bintray](https://bintray.com/) account that has access to LinkedIn's maven repository to be able to publish. The script will ask for the username and API key of the Bintray account.
