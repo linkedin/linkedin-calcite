@@ -16,11 +16,10 @@
  */
 package org.apache.calcite.util;
 
-import java.util.Collection;
+import com.google.common.collect.ForwardingMap;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -33,7 +32,7 @@ import java.util.function.Function;
  * @param <K> the type of keys maintained by this map
  * @param <V> the type of mapped values
  */
-public class SealableMap<K, V> implements Map<K, V> {
+public class SealableMap<K, V> extends ForwardingMap<K, V> {
   //~ Instance fields --------------------------------------------------------
 
   private final Map<K, V> delegate;
@@ -56,57 +55,58 @@ public class SealableMap<K, V> implements Map<K, V> {
 
   //~ Methods ----------------------------------------------------------------
 
-  @Override public int size() {
-    return delegate.size();
+  // SealableMap public methods
+
+  /**
+   * Seals the map for writes. No effect if already sealed
+   */
+  public void seal() {
+    sealed = true;
   }
 
-  @Override public boolean isEmpty() {
-    return delegate.isEmpty();
+  /**
+   * Unseals the map for writes. No effect if already unsealed
+   */
+  public void unseal() {
+    sealed = false;
   }
 
-  @Override public boolean containsKey(Object key) {
-    return delegate.containsKey(key);
+  /**
+   * @return if the map is currently sealed
+   */
+  public boolean isSealed() {
+    return sealed;
   }
 
-  @Override public boolean containsValue(Object value) {
-    return delegate.containsValue(value);
+  // Implemented for ForwardingMap
+
+  @Override
+  protected Map<K, V> delegate() {
+    return sealed ? readOnlyDelegate : delegate;
   }
 
-  @Override public V get(Object key) {
-    return delegate.get(key);
+  // overridden from ForwardingMap
+
+  @Override public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof SealableMap)) {
+      return false;
+    }
+    SealableMap<?, ?> that = (SealableMap<?, ?>) o;
+    return sealed == that.sealed && super.equals(that.delegate);
   }
 
-  @Override public V put(K key, V value) {
-    checkSealed();
-    return delegate.put(key, value);
+  @Override public int hashCode() {
+    return Objects.hash(delegate, sealed);
   }
 
-  @Override public V remove(Object key) {
-    checkSealed();
-    return delegate.remove(key);
+  @Override public String toString() {
+    return "SealableMap{" + "delegate=" + delegate + ", sealed=" + sealed + '}';
   }
 
-  @Override public void putAll(Map<? extends K, ? extends V> m) {
-    checkSealed();
-    delegate.putAll(m);
-  }
-
-  @Override public void clear() {
-    checkSealed();
-    delegate.clear();
-  }
-
-  @Override public Set<K> keySet() {
-    return sealed ? readOnlyDelegate.keySet() : delegate.keySet();
-  }
-
-  @Override public Collection<V> values() {
-    return sealed ? readOnlyDelegate.values() : delegate.values();
-  }
-
-  @Override public Set<Entry<K, V>> entrySet() {
-    return sealed ? readOnlyDelegate.entrySet() : delegate.entrySet();
-  }
+  // Overridden from Map
 
   @Override public V getOrDefault(Object key, V defaultValue) {
     return delegate.getOrDefault(key, defaultValue);
@@ -168,45 +168,7 @@ public class SealableMap<K, V> implements Map<K, V> {
     return delegate.merge(key, value, remappingFunction);
   }
 
-  @Override public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof SealableMap)) {
-      return false;
-    }
-    SealableMap<?, ?> that = (SealableMap<?, ?>) o;
-    return sealed == that.sealed && delegate.equals(that.delegate);
-  }
-
-  @Override public int hashCode() {
-    return Objects.hash(delegate, sealed);
-  }
-
-  @Override public String toString() {
-    return "SealableMap{" + "delegate=" + delegate + ", sealed=" + sealed + '}';
-  }
-
-  /**
-   * Seals the map for writes. No effect if already sealed
-   */
-  public void seal() {
-    sealed = true;
-  }
-
-  /**
-   * Unseals the map for writes. No effect if already unsealed
-   */
-  public void unseal() {
-    sealed = false;
-  }
-
-  /**
-   * @return if the map is currently sealed
-   */
-  public boolean isSealed() {
-    return sealed;
-  }
+  // SealableMap private methods
 
   private void checkSealed() {
     if (sealed) {
