@@ -17,6 +17,7 @@
 package org.apache.calcite.util;
 
 import com.google.common.collect.ForwardingMap;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -55,7 +56,7 @@ public class SealableMap<K, V> extends ForwardingMap<K, V> {
 
   //~ Methods ----------------------------------------------------------------
 
-  // SealableMap public methods
+  //~ SealableMap public methods -------------------------------------------
 
   /**
    * Seals the map for writes. No effect if already sealed
@@ -78,14 +79,13 @@ public class SealableMap<K, V> extends ForwardingMap<K, V> {
     return sealed;
   }
 
-  // Implemented for ForwardingMap
+  //~ Methods implemented for ForwardingMap -------------------------------------------
 
-  @Override
-  protected Map<K, V> delegate() {
+  @Override protected Map<K, V> delegate() {
     return sealed ? readOnlyDelegate : delegate;
   }
 
-  // overridden from ForwardingMap
+  //~ Methods overridden from ForwardingMap -------------------------------------------
 
   @Override public boolean equals(Object o) {
     if (this == o) {
@@ -106,7 +106,7 @@ public class SealableMap<K, V> extends ForwardingMap<K, V> {
     return "SealableMap{" + "delegate=" + delegate + ", sealed=" + sealed + '}';
   }
 
-  // Overridden from Map
+  //~ Methods overridden from Map -------------------------------------------
 
   @Override public V getOrDefault(Object key, V defaultValue) {
     return delegate.getOrDefault(key, defaultValue);
@@ -168,7 +168,7 @@ public class SealableMap<K, V> extends ForwardingMap<K, V> {
     return delegate.merge(key, value, remappingFunction);
   }
 
-  // SealableMap private methods
+  //~ SealableMap private methods -------------------------------------------
 
   private void checkSealed() {
     if (sealed) {

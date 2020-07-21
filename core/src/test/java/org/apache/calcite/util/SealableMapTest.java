@@ -78,11 +78,12 @@ public class SealableMapTest {
 
     assertNotEquals(map1, map3);
     assertNotEquals(map1, map4);
+    assertNotEquals(map3, map4);
   }
 
   private void ensureSealed(SealableMap<String, String> map, Map<String, String> backingMap) {
     assertTrue(map.isSealed());
-    ensureReadable(map, backingMap);
+    ensureReadableAndDataMatchesDelegate(map, backingMap);
 
     ensureFailure(() -> {
       map.put("foo", "bar");
@@ -167,7 +168,7 @@ public class SealableMapTest {
 
   private void ensureUnsealed(SealableMap<String, String> map, Map<String, String> backingMap) {
     assertFalse(map.isSealed());
-    ensureReadable(map, backingMap);
+    ensureReadableAndDataMatchesDelegate(map, backingMap);
 
     Map<String, String> backingMapCopy = new HashMap<>(backingMap);
 
@@ -221,7 +222,7 @@ public class SealableMapTest {
     map.putAll(backingMapCopy);
   }
 
-  private <K, V> void ensureReadable(Map<K, V> map, Map<K, V> backingMap) {
+  private <K, V> void ensureReadableAndDataMatchesDelegate(Map<K, V> map, Map<K, V> backingMap) {
     assertEquals(map.size(), backingMap.size());
     assertEquals(map.isEmpty(), backingMap.isEmpty());
     assertEquals(map.entrySet(), backingMap.entrySet());
