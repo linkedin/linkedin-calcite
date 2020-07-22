@@ -26,6 +26,7 @@ import org.apache.calcite.rex.RexNode;
 import org.apache.calcite.rex.RexTableInputRef.RelTableRef;
 import org.apache.calcite.sql.SqlExplainLevel;
 import org.apache.calcite.util.ImmutableBitSet;
+import org.apache.calcite.util.SealableMap;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -35,9 +36,9 @@ import java.lang.reflect.Proxy;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
 
 /**
  * RelMetadataQuery provides a strongly-typed facade on top of
@@ -75,8 +76,17 @@ import java.util.Set;
  * plugin mechanism.
  */
 public class RelMetadataQuery {
-  /** Set of active metadata queries, and cache of previous results. */
-  public final Map<List, Object> map = new HashMap<>();
+  /**
+   * Set of active metadata queries, and cache of previous results.
+   *
+   * Can be sealed when no more additions to the map are expected.
+   * Write operations on the map will fail after sealing
+   *
+   * Sealing is helpful if no additions to the map are expected or desired.
+   * The map here is unbounded so it can leak memory if not properly cleaned
+   * up
+   */
+  public final SealableMap<List, Object> map = new SealableMap<>(new HashMap<>());
 
   public final JaninoRelMetadataProvider metadataProvider;
 
