@@ -456,6 +456,18 @@ limitations under the License.
                   <pattern>org.pentaho</pattern>
                   <shadedPattern>com.linkedin.coral.org.pentaho</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>org.apache.commons.codec</pattern>
+                  <shadedPattern>com.linkedin.coral.org.apache.commons.codec</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.commons.logging</pattern>
+                  <shadedPattern>com.linkedin.coral.org.apache.commons.logging</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>javax.annotation</pattern>
+                  <shadedPattern>com.linkedin.coral.javax.annotation</shadedPattern>
+                </relocation>
               </relocations>
               <filters>
                 <filter>
