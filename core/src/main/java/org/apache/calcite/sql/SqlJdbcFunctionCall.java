@@ -50,7 +50,7 @@ import static org.apache.calcite.util.Static.RESOURCE;
  * <tr>
  * <td colspan="2"><br>
  *
- * <h3>NUMERIC FUNCTIONS</h3>
+ * <h2>NUMERIC FUNCTIONS</h2>
  * </td>
  * </tr>
  * <tr>
