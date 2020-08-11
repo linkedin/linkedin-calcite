@@ -48,7 +48,7 @@ import java.util.List;
  * {@link SqlValidatorNamespace} when resolving 'name', and
  * as a {@link SqlValidatorScope} when resolving 'gender'.</p>
  *
- * <h3>Scopes</h3>
+ * <h2>Scopes</h2>
  *
  * <p>In the query</p>
  *
