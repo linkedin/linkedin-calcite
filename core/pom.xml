@@ -531,6 +531,35 @@ limitations under the License.
         <targetPath>codegen</targetPath>
       </resource>
     </resources>
+
+  <pluginManagement>
+    <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-javadoc-plugin</artifactId>
+      <!-- This is the configuration used by "mvn javadoc:javadoc". It is
+           configured strict, so that it shows errors such as broken links in
+           javadoc on private methods. The configuration for "mvn site" is
+           under "reporting", and is more lenient. -->
+      <configuration>
+        <sourceFileIncludes>${project.basedir}/target/generated-sources/resgen/org/apache/calcite/runtime/Resources.java</sourceFileIncludes>
+        <additionalOptions>
+          <additionalOption>${maven-javadoc-html5}</additionalOption>
+        </additionalOptions>
+        <doclint>all,-missing</doclint>
+        <failOnWarnings>true</failOnWarnings>
+        <links>
+          <link>${maven-javadoc-plugin.link}</link>
+        </links>
+        <notimestamp>true</notimestamp>
+        <excludePackageNames>${maven-javadoc-plugin.excludePackageNames}</excludePackageNames>
+        <quiet>true</quiet>
+        <show>private</show>
+        <windowtitle>Apache Calcite API</windowtitle>
+      </configuration>
+    </plugin>
+    </plugins>
+  </pluginManagement>
   </build>
 
   <profiles>
