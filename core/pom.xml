@@ -542,12 +542,18 @@ limitations under the License.
            javadoc on private methods. The configuration for "mvn site" is
            under "reporting", and is more lenient. -->
       <configuration>
-        <sourceFileIncludes>${project.basedir}/target/generated-sources/resgen/org/apache/calcite/runtime/Resources.java</sourceFileIncludes>
+        <additionalDependencies>
+          <additionalDependency>
+            <groupId>org.apache.calcite</groupId>
+            <artifactId>calcite-core</artifactId>
+            <version>1.24.0</version>
+          </additionalDependency>
+        </additionalDependencies>
         <additionalOptions>
           <additionalOption>${maven-javadoc-html5}</additionalOption>
         </additionalOptions>
         <doclint>all,-missing</doclint>
-        <failOnWarnings>true</failOnWarnings>
+        <failOnWarnings>false</failOnWarnings>
         <links>
           <link>${maven-javadoc-plugin.link}</link>
         </links>
