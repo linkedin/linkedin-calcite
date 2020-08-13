@@ -557,6 +557,14 @@ limitations under the License.
         <show>private</show>
         <windowtitle>Apache Calcite API</windowtitle>
       </configuration>
+      <executions>
+        <execution>
+          <id>attach-javadocs</id>
+          <goals>
+            <goal>jar</goal>
+          </goals>
+        </execution>
+      </executions>
     </plugin>
     </plugins>
   </pluginManagement>
