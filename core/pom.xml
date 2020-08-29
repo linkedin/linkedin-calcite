@@ -537,32 +537,6 @@ limitations under the License.
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-javadoc-plugin</artifactId>
-      <!-- This is the configuration used by "mvn javadoc:javadoc". It is
-           configured strict, so that it shows errors such as broken links in
-           javadoc on private methods. The configuration for "mvn site" is
-           under "reporting", and is more lenient. -->
-      <configuration>
-        <additionalDependencies>
-          <additionalDependency>
-            <groupId>org.apache.calcite</groupId>
-            <artifactId>calcite-core</artifactId>
-            <version>1.24.0</version>
-          </additionalDependency>
-        </additionalDependencies>
-        <additionalOptions>
-          <additionalOption>${maven-javadoc-html5}</additionalOption>
-        </additionalOptions>
-        <doclint>all,-missing</doclint>
-        <failOnWarnings>false</failOnWarnings>
-        <links>
-          <link>${maven-javadoc-plugin.link}</link>
-        </links>
-        <notimestamp>true</notimestamp>
-        <excludePackageNames>${maven-javadoc-plugin.excludePackageNames}</excludePackageNames>
-        <quiet>true</quiet>
-        <show>private</show>
-        <windowtitle>Apache Calcite API</windowtitle>
-      </configuration>
       <executions>
         <execution>
           <id>attach-javadocs</id>
