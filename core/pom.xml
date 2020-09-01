@@ -20,7 +20,7 @@ limitations under the License.
   <parent>
     <groupId>com.linkedin.calcite</groupId>
     <artifactId>calcite</artifactId>
-    <version>1.21.0.138</version>
+    <version>1.21.0.140</version>
   </parent>
 
   <licenses>
@@ -33,7 +33,7 @@ limitations under the License.
 
   <artifactId>calcite-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.21.0.138</version>
+  <version>1.21.0.140</version>
   <name>Calcite Core</name>
   <description>Core Calcite APIs and engine.</description>
 
