@@ -19,13 +19,13 @@ limitations under the License.
   <parent>
     <groupId>com.linkedin.calcite</groupId>
     <artifactId>calcite</artifactId>
-    <version>1.21.0.138</version>
+    <version>1.21.0.140</version>
   </parent>
 
   <!-- The basics. -->
   <artifactId>calcite-file</artifactId>
   <packaging>jar</packaging>
-  <version>1.21.0.138</version>
+  <version>1.21.0.140</version>
   <name>Calcite File</name>
   <description>Calcite provider that reads files and URIs</description>
 

@@ -27,7 +27,7 @@ limitations under the License.
   <groupId>com.linkedin.calcite</groupId>
   <artifactId>calcite</artifactId>
   <packaging>pom</packaging>
-  <version>1.21.0.138</version>
+  <version>1.21.0.140</version>
 
   <licenses>
     <license>
