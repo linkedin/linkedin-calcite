@@ -61,6 +61,7 @@ limitations under the License.
   <properties>
     <top.dir>${project.basedir}/..</top.dir>
     <build.timestamp>${maven.build.timestamp}</build.timestamp>
+    <shadeBase>com.linkedin.coral.\$internal</shadeBase>
   </properties>
 
   <dependencies>
@@ -451,51 +452,51 @@ limitations under the License.
               <relocations>
                 <relocation>
                   <pattern>com.google.protobuf</pattern>
-                  <shadedPattern>com.linkedin.coral.com.google.protobuf</shadedPattern>
+                  <shadedPattern>${shadeBase}.com.google.protobuf</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.google.thirdparty</pattern>
-                  <shadedPattern>com.linkedin.coral.com.google.thirdparty</shadedPattern>
+                  <shadedPattern>${shadeBase}.com.google.thirdparty</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>google.protobuf</pattern>
-                  <shadedPattern>com.linkedin.coral.google.protobuf</shadedPattern>
+                  <shadedPattern>${shadeBase}.google.protobuf</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.google.common</pattern>
-                  <shadedPattern>com.linkedin.coral.com.google.common</shadedPattern>
+                  <shadedPattern>${shadeBase}.com.google.common</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.fasterxml.jackson</pattern>
-                  <shadedPattern>com.linkedin.coral.com.fasterxml.jackson</shadedPattern>
+                  <shadedPattern>${shadeBase}.com.fasterxml.jackson</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.apache.http</pattern>
-                  <shadedPattern>com.linkedin.coral.org.apache.http</shadedPattern>
+                  <shadedPattern>${shadeBase}.org.apache.http</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.slf4j</pattern>
-                  <shadedPattern>com.linkedin.coral.org.slf4j</shadedPattern>
+                  <shadedPattern>${shadeBase}.org.slf4j</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.esri</pattern>
-                  <shadedPattern>com.linkedin.coral.com.esri</shadedPattern>
+                  <shadedPattern>${shadeBase}.com.esri</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.pentaho</pattern>
-                  <shadedPattern>com.linkedin.coral.org.pentaho</shadedPattern>
+                  <shadedPattern>${shadeBase}.org.pentaho</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.apache.commons.codec</pattern>
-                  <shadedPattern>com.linkedin.coral.org.apache.commons.codec</shadedPattern>
+                  <shadedPattern>${shadeBase}.org.apache.commons.codec</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.apache.commons.logging</pattern>
-                  <shadedPattern>com.linkedin.coral.org.apache.commons.logging</shadedPattern>
+                  <shadedPattern>${shadeBase}.org.apache.commons.logging</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>javax.annotation</pattern>
-                  <shadedPattern>com.linkedin.coral.javax.annotation</shadedPattern>
+                  <shadedPattern>${shadeBase}.javax.annotation</shadedPattern>
                 </relocation>
               </relocations>
               <filters>
