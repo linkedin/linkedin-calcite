@@ -443,7 +443,10 @@ limitations under the License.
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.1.1</version>
         <executions>
+
           <execution>
+            <!-- Note we produces 'shaded' and 'shaded-all' artifacts. -->
+            <id>shaded</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
@@ -514,6 +517,101 @@ limitations under the License.
               <shadedClassifierName>shaded</shadedClassifierName>
             </configuration>
           </execution>
+
+          <execution>
+            <!-- Note we produces 'shaded' and 'shaded-all' artifacts. -->
+            <id>shaded-all</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <relocations>
+                <relocation>
+                  <pattern>com.google.protobuf</pattern>
+                  <shadedPattern>${shadeBase}.com.google.protobuf</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.thirdparty</pattern>
+                  <shadedPattern>${shadeBase}.com.google.thirdparty</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>google.protobuf</pattern>
+                  <shadedPattern>${shadeBase}.google.protobuf</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.common</pattern>
+                  <shadedPattern>${shadeBase}.com.google.common</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.fasterxml.jackson</pattern>
+                  <shadedPattern>${shadeBase}.com.fasterxml.jackson</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.http</pattern>
+                  <shadedPattern>${shadeBase}.org.apache.http</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.slf4j</pattern>
+                  <shadedPattern>${shadeBase}.org.slf4j</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.esri</pattern>
+                  <shadedPattern>${shadeBase}.com.esri</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.pentaho</pattern>
+                  <shadedPattern>${shadeBase}.org.pentaho</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.commons.codec</pattern>
+                  <shadedPattern>${shadeBase}.org.apache.commons.codec</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.apache.commons</pattern>
+                  <shadedPattern>${shadeBase}.org.apache.commons</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.codehaus.janino</pattern>
+                  <shadedPattern>${shadeBase}.org.codehaus.janino</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.codehaus.commons</pattern>
+                  <shadedPattern>${shadeBase}.org.codehaus.commons</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.jayway</pattern>
+                  <shadedPattern>${shadeBase}.com.jayway</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.yaml</pattern>
+                  <shadedPattern>${shadeBase}.org.yaml</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.yahoo</pattern>
+                  <shadedPattern>${shadeBase}.com.yahoo</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>javax.annotation</pattern>
+                  <shadedPattern>${shadeBase}.javax.annotation</shadedPattern>
+                </relocation>
+              </relocations>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>mozilla/public-suffix-list.txt</exclude>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>shaded-all</shadedClassifierName>
+            </configuration>
+          </execution>
+
         </executions>
       </plugin>
     </plugins>
