@@ -18,9 +18,21 @@ limitations under the License.
           xmlns='http://maven.apache.org/SETTINGS/1.0.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <servers>
     <server>
-      <id>bintray-linkedin-maven</id>
-      <username>${env.MVN_DEPLOY_BINTRAY_USER}</username>
-      <password>${env.MVN_DEPLOY_BINTRAY_KEY}</password>
+      <id>ossrh</id>
+      <username>${env.MVN_DEPLOY_JIRA_USER}</username>
+      <password>${env.MVN_DEPLOY_JIRA_PASS}</password>
     </server>
   </servers>
+  <profiles>
+    <profile>
+      <id>ossrh</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <gpg.executable>gpg2</gpg.executable>
+        <gpg.passphrase>[enter gpg passphrase here]</gpg.passphrase>
+      </properties>
+    </profile>
+  </profiles>
 </settings>

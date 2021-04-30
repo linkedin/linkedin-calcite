@@ -17,13 +17,13 @@
 
 echo "!!This will change the pom.xml files and you will need to revert them. If you have local changes, exit now and stash them!!"
 
-while [ -z "$USER_NAME" ]; do
-  echo "Please provide your bintray username"
-  read USER_NAME
+while [ -z "$JIRA_NAME" ]; do
+  echo "Please provide your sonatype jira username"
+  read JIRA_NAME
 done
-while [ -z "$API_KEY" ]; do
-  echo "Please provide your bintray API key"
-  read -s API_KEY
+while [ -z "$JIRA_PASSWORD" ]; do
+  echo "Please provide your sonatype jira password"
+  read JIRA_PASSWORD
   echo
 done
 
@@ -46,5 +46,5 @@ echo "Setting version in mvn (discard any changes to repository once publish is 
 mvn versions:set -DnewVersion="$BUILD_VERSION" -q -B
 mvn versions:commit -q -B
 
-echo "Publishing to LI bintray"
-MVN_DEPLOY_BINTRAY_USER=$USER_NAME MVN_DEPLOY_BINTRAY_KEY=$API_KEY eval 'mvn deploy -s .lipublish/publishSettings.xml -DskipTests -q -DretryFailedDeploymentCount=5 -DaltDeploymentRepository=bintray-linkedin-maven::default::"https://api.bintray.com/maven/linkedin/maven/calcite/;publish=1;override=1"'
+echo "Publishing to maven central"
+MVN_DEPLOY_JIRA_USER=$JIRA_NAME MVN_DEPLOY_JIRA_PASS=$JIRA_PASSWORD eval 'mvn clean deploy -s .lipublish/publishSettings.xml -DskipTests -q -DretryFailedDeploymentCount=5'

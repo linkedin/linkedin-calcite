@@ -106,7 +106,7 @@ public interface Enumerator<T> extends AutoCloseable {
    * <p>This method is optional; it may throw
    * {@link UnsupportedOperationException}.
    *
-   * <h4>Notes to Implementers</h4>
+   * <p><b>Notes to Implementers</b>
    *
    * <p>All calls to Reset must result in the same state for the enumerator.
    * The preferred implementation is to move the enumerator to the beginning
