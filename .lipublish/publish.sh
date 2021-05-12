@@ -17,13 +17,18 @@
 
 echo "!!This will change the pom.xml files and you will need to revert them. If you have local changes, exit now and stash them!!"
 
-while [ -z "$USER_NAME" ]; do
-  echo "Please provide your bintray username"
-  read USER_NAME
+while [ -z "$SONATYPE_USERNAME" ]; do
+  echo "Please provide your sonatype username"
+  read SONATYPE_USERNAME
 done
-while [ -z "$API_KEY" ]; do
-  echo "Please provide your bintray API key"
-  read -s API_KEY
+while [ -z "$SONATYPE_PASSWORD" ]; do
+  echo "Please provide your sonatype password"
+  read SONATYPE_PASSWORD
+  echo
+done
+while [ -z "$GPG_PASSWD" ]; do
+  echo "Please provide your gpg key password"
+  read GPG_PASSWD
   echo
 done
 
@@ -46,5 +51,5 @@ echo "Setting version in mvn (discard any changes to repository once publish is 
 mvn versions:set -DnewVersion="$BUILD_VERSION" -q -B
 mvn versions:commit -q -B
 
-echo "Publishing to LI bintray"
-MVN_DEPLOY_BINTRAY_USER=$USER_NAME MVN_DEPLOY_BINTRAY_KEY=$API_KEY eval 'mvn deploy -s .lipublish/publishSettings.xml -DskipTests -q -DretryFailedDeploymentCount=5 -DaltDeploymentRepository=bintray-linkedin-maven::default::"https://api.bintray.com/maven/linkedin/maven/calcite/;publish=1;override=1"'
+echo "Publishing to maven central"
+MVN_DEPLOY_SONATYPE_USER=$SONATYPE_USERNAME MVN_DEPLOY_SONATYPE_PASSWORD=$SONATYPE_PASSWORD MVN_DEPLOY_GPG_PASSWD=$GPG_PASSWD eval 'mvn clean deploy -s .lipublish/publishSettings.xml -DskipTests -q -DretryFailedDeploymentCount=5'

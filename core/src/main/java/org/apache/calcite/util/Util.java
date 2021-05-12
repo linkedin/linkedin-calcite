@@ -988,10 +988,10 @@ public class Util {
    *
    * <p>but the usual usage is to pass in a descriptive string.
    *
-   * <h4>Examples</h4>
+   * <p><b>Examples</b>
    *
-   * <h4>Example #1: Using <code>deprecated</code> to fail if a piece of
-   * supposedly dead code is reached</h4>
+   * <p><b>Example #1: Using <code>deprecated</code> to fail if a piece of
+   * supposedly dead code is reached</b>
    *
    * <blockquote>
    * <pre><code>void foo(int x) {
@@ -1006,8 +1006,8 @@ public class Util {
    * }</code></pre>
    * </blockquote>
    *
-   * <h4>Example #2: Using <code>deprecated</code> to comment out dead
-   * code</h4>
+   * <p><b>Example #2: Using <code>deprecated</code> to comment out dead
+   * code</b>
    *
    * <blockquote>
    * <pre>if (Util.deprecated(false, false)) {
