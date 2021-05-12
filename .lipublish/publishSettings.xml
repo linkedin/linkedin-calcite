@@ -19,8 +19,8 @@ limitations under the License.
   <servers>
     <server>
       <id>ossrh</id>
-      <username>${env.MVN_DEPLOY_JIRA_USER}</username>
-      <password>${env.MVN_DEPLOY_JIRA_PASS}</password>
+      <username>${env.MVN_DEPLOY_SONATYPE_USER}</username>
+      <password>${env.MVN_DEPLOY_SONATYPE_PASSWORD}</password>
     </server>
   </servers>
   <profiles>
@@ -31,7 +31,7 @@ limitations under the License.
       </activation>
       <properties>
         <gpg.executable>gpg2</gpg.executable>
-        <gpg.passphrase>[enter gpg passphrase here]</gpg.passphrase>
+        <gpg.passphrase>${env.MVN_DEPLOY_GPG_PASSWD}</gpg.passphrase>
       </properties>
     </profile>
   </profiles>

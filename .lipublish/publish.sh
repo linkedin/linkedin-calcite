@@ -17,13 +17,18 @@
 
 echo "!!This will change the pom.xml files and you will need to revert them. If you have local changes, exit now and stash them!!"
 
-while [ -z "$JIRA_NAME" ]; do
-  echo "Please provide your sonatype jira username"
-  read JIRA_NAME
+while [ -z "$SONATYPE_USERNAME" ]; do
+  echo "Please provide your sonatype username"
+  read SONATYPE_USERNAME
 done
-while [ -z "$JIRA_PASSWORD" ]; do
-  echo "Please provide your sonatype jira password"
-  read JIRA_PASSWORD
+while [ -z "$SONATYPE_PASSWORD" ]; do
+  echo "Please provide your sonatype password"
+  read SONATYPE_PASSWORD
+  echo
+done
+while [ -z "$GPG_PASSWD" ]; do
+  echo "Please provide your gpg key password"
+  read GPG_PASSWD
   echo
 done
 
@@ -47,4 +52,4 @@ mvn versions:set -DnewVersion="$BUILD_VERSION" -q -B
 mvn versions:commit -q -B
 
 echo "Publishing to maven central"
-MVN_DEPLOY_JIRA_USER=$JIRA_NAME MVN_DEPLOY_JIRA_PASS=$JIRA_PASSWORD eval 'mvn clean deploy -s .lipublish/publishSettings.xml -DskipTests -q -DretryFailedDeploymentCount=5'
+MVN_DEPLOY_SONATYPE_USER=$SONATYPE_USERNAME MVN_DEPLOY_SONATYPE_PASSWORD=$SONATYPE_PASSWORD MVN_DEPLOY_GPG_PASSWD=$GPG_PASSWD eval 'mvn clean deploy -s .lipublish/publishSettings.xml -DskipTests -q -DretryFailedDeploymentCount=5'
