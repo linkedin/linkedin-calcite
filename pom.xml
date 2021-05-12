@@ -93,7 +93,7 @@ limitations under the License.
     <commons-lang3.version>3.8</commons-lang3.version>
     <commons-pool2.version>2.6.2</commons-pool2.version>
     <drill-fmpp-maven-plugin.version>1.14.0</drill-fmpp-maven-plugin.version>
-    <elasticsearch.version>7.0.1</elasticsearch.version>
+    <elasticsearch.version>7.11.0</elasticsearch.version>
     <esri-geometry-api.version>2.2.0</esri-geometry-api.version>
     <findbugs.version>3.0.1</findbugs.version>
     <fmpp.version>0.9.16</fmpp.version>
