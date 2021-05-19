@@ -444,7 +444,7 @@ limitations under the License.
         <version>3.1.1</version>
         <executions>
           <execution>
-            <!-- Note we produces 'shaded' and 'shaded-all' artifacts. -->
+            <!-- Note we produce 'shaded' and 'shaded-all' artifacts. -->
             <id>shaded</id>
             <phase>package</phase>
             <goals>
@@ -518,7 +518,7 @@ limitations under the License.
           </execution>
 
           <execution>
-            <!-- Note we produces 'shaded' and 'shaded-all' artifacts. -->
+            <!-- Note we produce 'shaded' and 'shaded-all' artifacts. -->
             <id>shaded-all</id>
             <phase>package</phase>
             <goals>
