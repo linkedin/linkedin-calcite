@@ -975,6 +975,9 @@ public class SqlValidatorUtil {
           && SqlNameMatchers.withCaseSensitive(true).matches(p, schema.getName())) {
         continue;
       }
+      if (schema == null) {
+        break;
+      }
       schema = schema.getSubSchema(p, true);
     }
     return schema == null ? null : schema.getType(name, false);
