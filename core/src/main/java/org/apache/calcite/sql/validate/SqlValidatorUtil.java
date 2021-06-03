@@ -971,12 +971,12 @@ public class SqlValidatorUtil {
     }
     CalciteSchema schema = rootSchema;
     for (String p : path) {
+      if (schema == null) {
+        break;
+      }
       if (schema == rootSchema
           && SqlNameMatchers.withCaseSensitive(true).matches(p, schema.getName())) {
         continue;
-      }
-      if (schema == null) {
-        break;
       }
       schema = schema.getSubSchema(p, true);
     }
