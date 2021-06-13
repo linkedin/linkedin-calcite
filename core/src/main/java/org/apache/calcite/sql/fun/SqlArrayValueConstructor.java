@@ -17,9 +17,14 @@
 package org.apache.calcite.sql.fun;
 
 import org.apache.calcite.rel.type.RelDataType;
+import org.apache.calcite.rel.type.RelDataTypeFactory;
+import org.apache.calcite.sql.SqlCallBinding;
 import org.apache.calcite.sql.SqlKind;
 import org.apache.calcite.sql.SqlOperatorBinding;
+import org.apache.calcite.sql.type.SqlTypeName;
 import org.apache.calcite.sql.type.SqlTypeUtil;
+
+import java.util.List;
 
 /**
  * Definition of the SQL:2003 standard ARRAY constructor, <code>ARRAY
@@ -40,6 +45,27 @@ public class SqlArrayValueConstructor extends SqlMultisetValueConstructor {
     }
     return SqlTypeUtil.createArrayType(
         opBinding.getTypeFactory(), type, false);
+  }
+
+  /**
+   * Allow users to select an empty array
+   */
+  public static class SqlArrayValueConstructorAllowingEmpty
+      extends SqlArrayValueConstructor {
+    @Override protected RelDataType getComponentType(
+        RelDataTypeFactory typeFactory, List<RelDataType> argTypes) {
+      if (argTypes.isEmpty()) {
+        return typeFactory.createSqlType(SqlTypeName.NULL);
+      }
+      return super.getComponentType(typeFactory, argTypes);
+    }
+
+    @Override public boolean checkOperandTypes(SqlCallBinding callBinding, boolean throwOnFailure) {
+      if (callBinding.operands().isEmpty()) {
+        return true;
+      }
+      return super.checkOperandTypes(callBinding, throwOnFailure);
+    }
   }
 }
 

@@ -2035,7 +2035,7 @@ public class SqlStdOperatorTable extends ReflectiveSqlOperatorTable {
    * The ARRAY Value Constructor. e.g. "<code>ARRAY[1, 2, 3]</code>".
    */
   public static final SqlArrayValueConstructor ARRAY_VALUE_CONSTRUCTOR =
-      new SqlArrayValueConstructor();
+      new SqlArrayValueConstructor.SqlArrayValueConstructorAllowingEmpty();
 
   /**
    * The MAP Value Constructor,

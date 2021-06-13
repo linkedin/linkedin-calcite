@@ -7482,11 +7482,6 @@ public abstract class SqlOperatorBaseTest {
         "Array['foo', 'bar']",
         "[foo, bar]",
         "CHAR(3) NOT NULL ARRAY NOT NULL");
-
-    // empty array is illegal per SQL spec. presumably because one can't
-    // infer type
-    tester.checkFails(
-        "^Array[]^", "Require at least 1 argument", false);
   }
 
   @Test public void testItemOp() {
