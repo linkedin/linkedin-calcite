@@ -16,8 +16,12 @@
  */
 package org.apache.calcite.sql.test;
 
+import org.apache.calcite.sql.fun.SqlStdOperatorTable;
 import org.apache.calcite.sql.validate.SqlValidator;
 import org.apache.calcite.test.SqlValidatorTestCase;
+
+import org.junit.Test;
+
 
 /**
  * Concrete subclass of {@link SqlOperatorBaseTest} which checks against
@@ -32,6 +36,12 @@ public class SqlOperatorTest extends SqlOperatorBaseTest {
    */
   public SqlOperatorTest() {
     super(false, DEFAULT_TESTER);
+  }
+
+  @Test
+  public void testEmptyArray() {
+    tester.setFor(SqlStdOperatorTable.ARRAY_VALUE_CONSTRUCTOR);
+    tester.checkScalar("Array[]", "[]", "NULL ARRAY NOT NULL");
   }
 }
 
