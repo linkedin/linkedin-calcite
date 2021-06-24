@@ -7522,9 +7522,6 @@ public abstract class SqlOperatorBaseTest {
     tester.setFor(SqlStdOperatorTable.MAP_VALUE_CONSTRUCTOR, VM_JAVA);
 
     tester.checkFails(
-        "^Map[]^", "Map requires at least 2 arguments", false);
-
-    tester.checkFails(
         "^Map[1, 'x', 2]^",
         "Map requires an even number of arguments",
         false);

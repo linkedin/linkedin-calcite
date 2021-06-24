@@ -43,6 +43,15 @@ public class SqlOperatorTest extends SqlOperatorBaseTest {
     tester.setFor(SqlStdOperatorTable.ARRAY_VALUE_CONSTRUCTOR);
     tester.checkScalar("Array[]", "[]", "NULL ARRAY NOT NULL");
   }
+
+  @Test
+  public void testEmptyMap() {
+    tester.setFor(SqlStdOperatorTable.MAP_VALUE_CONSTRUCTOR);
+    tester.checkScalarExact(
+        "Map[]",
+        "(NULL, NULL) MAP NOT NULL",
+        "[{}]");
+  }
 }
 
 // End SqlOperatorTest.java
