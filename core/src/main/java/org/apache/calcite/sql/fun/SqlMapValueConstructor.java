@@ -21,6 +21,7 @@ import org.apache.calcite.rel.type.RelDataTypeFactory;
 import org.apache.calcite.sql.SqlCallBinding;
 import org.apache.calcite.sql.SqlKind;
 import org.apache.calcite.sql.SqlOperatorBinding;
+import org.apache.calcite.sql.type.SqlTypeName;
 import org.apache.calcite.sql.type.SqlTypeUtil;
 import org.apache.calcite.util.Pair;
 import org.apache.calcite.util.Util;
@@ -63,7 +64,7 @@ public class SqlMapValueConstructor extends SqlMultisetValueConstructor {
             callBinding.getScope(),
             callBinding.operands());
     if (argTypes.size() == 0) {
-      throw callBinding.newValidationError(RESOURCE.mapRequiresTwoOrMoreArgs());
+      return true;
     }
     if (argTypes.size() % 2 > 0) {
       throw callBinding.newValidationError(RESOURCE.mapRequiresEvenArgCount());
@@ -83,6 +84,10 @@ public class SqlMapValueConstructor extends SqlMultisetValueConstructor {
   private Pair<RelDataType, RelDataType> getComponentTypes(
       RelDataTypeFactory typeFactory,
       List<RelDataType> argTypes) {
+    if (argTypes.size() == 0) {
+      return Pair.of(typeFactory.createSqlType(SqlTypeName.NULL),
+          typeFactory.createSqlType(SqlTypeName.NULL));
+    }
     return Pair.of(
         typeFactory.leastRestrictive(Util.quotientList(argTypes, 2, 0)),
         typeFactory.leastRestrictive(Util.quotientList(argTypes, 2, 1)));
