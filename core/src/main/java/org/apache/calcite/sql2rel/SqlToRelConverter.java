@@ -3724,7 +3724,7 @@ public class SqlToRelConverter {
         int i = e0.right.get(name);
         e = rexBuilder.makeFieldAccess(e, i);
       } else {
-        final boolean caseSensitive = true; // name already fully-qualified
+        final boolean caseSensitive = false;
         if (identifier.isStar() && bb.scope instanceof MatchRecognizeScope) {
           e = rexBuilder.makeFieldAccess(e, 0);
         } else {
