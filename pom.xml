@@ -157,7 +157,7 @@ limitations under the License.
     <sqlline.version>1.8.0</sqlline.version>
     <tpcds.version>1.2</tpcds.version>
     <xalan.version>2.7.1</xalan.version>
-    <xerces.version>2.9.1</xerces.version>
+    <xerces.version>2.12.2</xerces.version>
 
     <!-- Other properties (not version numbers) -->
     <!-- Java 1.8 does not support -html5, so override via profile for Java 1.8 -->
