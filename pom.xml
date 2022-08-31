@@ -84,7 +84,7 @@ limitations under the License.
     <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
     <cassandra-driver-core.version>3.6.0</cassandra-driver-core.version>
     <cassandra-unit.version>3.5.0.1</cassandra-unit.version>
-    <cassandra.version>3.11.2</cassandra.version>
+    <cassandra.version>3.11.13</cassandra.version>
     <checkstyle.version>7.8.2</checkstyle.version>
     <checksum-maven-plugin.version>1.2</checksum-maven-plugin.version>
     <chinook-data-hsqldb.version>0.1</chinook-data-hsqldb.version>
@@ -118,7 +118,7 @@ limitations under the License.
     <hydromatic-resource.version>0.6</hydromatic-resource.version>
     <hydromatic-toolbox.version>0.3</hydromatic-toolbox.version>
     <hydromatic-tpcds.version>0.4</hydromatic-tpcds.version>
-    <jackson.version>2.9.9</jackson.version>
+    <jackson.version>2.13.2</jackson.version>
     <jackson-databind.version>2.9.10.8</jackson-databind.version>
     <janino.version>3.0.11</janino.version>
     <javacc-maven-plugin.version>2.4</javacc-maven-plugin.version>
