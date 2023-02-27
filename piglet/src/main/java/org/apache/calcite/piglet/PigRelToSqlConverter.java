@@ -16,6 +16,7 @@
  */
 package org.apache.calcite.piglet;
 
+import com.google.common.collect.ImmutableSet;
 import org.apache.calcite.adapter.enumerable.EnumerableInterpreter;
 import org.apache.calcite.linq4j.tree.Expressions;
 import org.apache.calcite.rel.RelFieldCollation;
@@ -53,12 +54,14 @@ public class PigRelToSqlConverter extends RelToSqlConverter {
   }
 
   @Override public Result visit(Aggregate e) {
-    final Result x = visitChild(0, e.getInput());
     final boolean isProjectOutput = e.getInput() instanceof Project
         || (e.getInput() instanceof EnumerableInterpreter
-            && ((EnumerableInterpreter) e.getInput()).getInput()
-                instanceof Project);
-    final Builder builder = getAggregateBuilder(e, x, isProjectOutput);
+        && ((EnumerableInterpreter) e.getInput()).getInput()
+        instanceof Project);
+    final Result x =
+        visitInput(e, 0, isAnon(), isProjectOutput,
+            ImmutableSet.of(Clause.GROUP_BY));
+    final Builder builder = x.builder(e);
 
     final List<SqlNode> groupByList = Expressions.list();
     final List<SqlNode> selectList = new ArrayList<>();
@@ -79,13 +82,13 @@ public class PigRelToSqlConverter extends RelToSqlConverter {
       groupBy = new SqlNodeList(cubeRollupList, POS);
     }
 
-    return buildAggregate(e, builder, selectList, groupBy.getList());
+    return buildAggregate(e, builder, selectList, groupBy.getList()).result();
   }
 
   /** @see #dispatch */
   public Result visit(Window e) {
-    final Result x = visitChild(0, e.getInput());
-    final Builder builder = x.builder(e, Clause.SELECT);
+    final Result x = visitInput(e, 0, Clause.SELECT);
+    final Builder builder = x.builder(e);
     final List<SqlNode> selectList =
         new ArrayList<>(builder.context.fieldList());
 
