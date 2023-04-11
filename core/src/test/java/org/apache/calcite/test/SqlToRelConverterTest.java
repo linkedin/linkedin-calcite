@@ -3560,10 +3560,6 @@ public class SqlToRelConverterTest extends SqlToRelTestBase {
    * Exception when nested field queried from subquery</a>.
    */
   @Test public void testSelectNestedFromSubquery() {
-//    final String sql = "SELECT deptno, tmp.r.f0, tmp.r.f1 FROM\n"
-//        + "(SELECT deptno, STRUCTURED_FUNC() AS r from dept)tmp";
-//    sql(sql).ok();
-
     final String sql = "select tmp.nested.\"EXPR$0\" as id from ("
         + "  select (1, 2) as nested) tmp";
     sql(sql).ok();
