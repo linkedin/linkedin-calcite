@@ -6272,4 +6272,16 @@ LogicalProject(EXPR$0=[IGNORE NULLS(LEAD($5, 4))], EXPR$1=[LEAD($5, 4) OVER (ORD
 ]]>
         </Resource>
     </TestCase>
+    <TestCase name="testSelectNestedFromSubquery">
+        <Resource name="sql">
+            <![CDATA[SELECT tmp.nested."EXPR$0" AS if FROM
+(SELECT (1, 2) AS nested) tmp]]>
+        </Resource>
+        <Resource name="plan">
+            <![CDATA[
+LogicalProject(ID=[ROW(1, 2).EXPR$0])
+  LogicalValues(tuples=[[{ 0 }]])
+]]>
+        </Resource>
+    </TestCase>
 </Root>

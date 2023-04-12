@@ -3555,6 +3555,17 @@ public class SqlToRelConverterTest extends SqlToRelTestBase {
   }
 
   /**
+   * Test case for
+   * <a href="https://issues.apache.org/jira/browse/CALCITE-4145">[CALCITE-4145]
+   * Exception when nested field queried from subquery</a>.
+   */
+  @Test public void testSelectNestedFromSubquery() {
+    final String sql = "select tmp.nested.\"EXPR$0\" as id from ("
+        + "  select (1, 2) as nested) tmp";
+    sql(sql).ok();
+  }
+
+  /**
    * Visitor that checks that every {@link RelNode} in a tree is valid.
    *
    * @see RelNode#isValid(Litmus, RelNode.Context)
