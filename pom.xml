@@ -118,8 +118,8 @@ limitations under the License.
     <hydromatic-resource.version>0.6</hydromatic-resource.version>
     <hydromatic-toolbox.version>0.3</hydromatic-toolbox.version>
     <hydromatic-tpcds.version>0.4</hydromatic-tpcds.version>
-    <jackson.version>2.13.2</jackson.version>
-    <jackson-databind.version>2.9.10.8</jackson-databind.version>
+    <jackson.version>2.14.1</jackson.version>
+    <jackson-databind.version>2.14.1</jackson-databind.version>
     <janino.version>3.0.11</janino.version>
     <javacc-maven-plugin.version>2.4</javacc-maven-plugin.version>
     <java-diff.version>1.1.2</java-diff.version>
