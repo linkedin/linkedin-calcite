@@ -42,8 +42,8 @@ VERSION_PREFIX=$(grep -E "<calciteVersion>(.*)</calciteVersion>" pom.xml | cut -
 APACHE_CALCITE_LAST_COMMIT_HASH=$(grep -E "<calciteCommitHash>(.*)</calciteCommitHash>" pom.xml | cut -d'>' -f2 | cut -d'<' -f1)
 # next, we count the number of commits we have made on top of Apache Calcite since the last sync.
 GIT_COMMIT_COUNT=$(git rev-list --count $APACHE_CALCITE_LAST_COMMIT_HASH..HEAD)
-# next, we create an internal version. 100 is an arbitrary seed
-LI_INTERNAL_VERSION=$(($GIT_COMMIT_COUNT + 100))
+# next, we create an internal version. 200 is an arbitrary seed
+LI_INTERNAL_VERSION=$(($GIT_COMMIT_COUNT + 200))
 # now we can construct a build version
 BUILD_VERSION=${VERSION_PREFIX}.${LI_INTERNAL_VERSION}${DEV_VERSION}
 echo "Current build version: ${BUILD_VERSION}"
