@@ -350,12 +350,12 @@ public class SqlDialect {
    * @return The buffer
    */
   public StringBuilder quoteIdentifier(
-          StringBuilder buf,
-          String val) {
+      StringBuilder buf,
+      String val) {
     if (identifierQuoteString == null // quoting is not supported
-            || identifierEndQuoteString == null
-            || identifierEscapedQuote == null
-            || !identifierNeedsQuote(val)) {
+        || identifierEndQuoteString == null
+        || identifierEscapedQuote == null
+        || !identifierNeedsQuote(val)) {
       buf.append(val);
     } else {
       buf.append(identifierQuoteString);
