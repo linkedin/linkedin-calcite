@@ -334,14 +334,7 @@ public class SqlDialect {
    * @return Quoted identifier
    */
   public String quoteIdentifier(String val) {
-    if (identifierQuoteString == null) {
-      return val; // quoting is not supported
-    }
-    String val2 =
-        val.replaceAll(
-            identifierEndQuoteString,
-            identifierEscapedQuote);
-    return identifierQuoteString + val2 + identifierEndQuoteString;
+    return quoteIdentifier(new StringBuilder(), val).toString();
   }
 
   /**
@@ -357,18 +350,16 @@ public class SqlDialect {
    * @return The buffer
    */
   public StringBuilder quoteIdentifier(
-      StringBuilder buf,
-      String val) {
+          StringBuilder buf,
+          String val) {
     if (identifierQuoteString == null // quoting is not supported
-        || !identifierNeedsQuote(val)) {
+            || identifierEndQuoteString == null
+            || identifierEscapedQuote == null
+            || !identifierNeedsQuote(val)) {
       buf.append(val);
     } else {
-      String val2 =
-          val.replaceAll(
-              identifierEndQuoteString,
-              identifierEscapedQuote);
       buf.append(identifierQuoteString);
-      buf.append(val2);
+      buf.append(val.replace(identifierEndQuoteString, identifierEscapedQuote));
       buf.append(identifierEndQuoteString);
     }
     return buf;
