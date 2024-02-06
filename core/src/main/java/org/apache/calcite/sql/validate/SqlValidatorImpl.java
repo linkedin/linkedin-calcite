@@ -2237,7 +2237,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
           parentScope,
           usingScope,
           register,
-          ((SqlCall) node).operand(0), // this is where the drop actually happens since node is the lateral call and it's first operand is simply the inner subquery
+          ((SqlCall) node).operand(0), // this is where the drop actually happens since node is the lateral call and it's first operand is simply the inner subquery. I've attempted to simply pass in "node" here but leads to infinite recursion.
           enclosingNode,
           alias,
           extendList,
