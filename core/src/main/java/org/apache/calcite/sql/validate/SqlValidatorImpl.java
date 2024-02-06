@@ -59,6 +59,7 @@ import org.apache.calcite.sql.SqlIntervalLiteral;
 import org.apache.calcite.sql.SqlIntervalQualifier;
 import org.apache.calcite.sql.SqlJoin;
 import org.apache.calcite.sql.SqlKind;
+import org.apache.calcite.sql.SqlLateralOperator;
 import org.apache.calcite.sql.SqlLiteral;
 import org.apache.calcite.sql.SqlMatchRecognize;
 import org.apache.calcite.sql.SqlMerge;
@@ -135,6 +136,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import static org.apache.calcite.rel.rel2sql.SqlImplementor.*;
 import static org.apache.calcite.sql.SqlUtil.stripAs;
 import static org.apache.calcite.util.Static.RESOURCE;
 
@@ -2108,7 +2110,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
         alias = call.operand(1).toString();
       }
       final boolean needAlias = call.operandCount() > 2;
-      expr = call.operand(0);
+      expr = call.operand(0); // call the AS operator, first operand is lateral call
       newExpr =
           registerFrom(
               parentScope,
@@ -2121,7 +2123,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
               forceNullable,
               lateral);
       if (newExpr != expr) {
-        call.setOperand(0, newExpr);
+        call.setOperand(0, newExpr); // at this point newExpr is the inner subquery with the outer lateral dropped
       }
 
       // If alias has a column list, introduce a namespace to translate
@@ -2164,7 +2166,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
       scopes.put(join, joinScope);
       final SqlNode left = join.getLeft();
       final SqlNode right = join.getRight();
-      final boolean rightIsLateral = isLateral(right);
+      final boolean rightIsLateral = isLateral(right); //unused variable i thought could be a bug that should be used in line 2208/2209 but that didnt work either
       boolean forceLeftNullable = forceNullable;
       boolean forceRightNullable = forceNullable;
       switch (join.getJoinType()) {
@@ -2203,6 +2205,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
               null,
               null,
               forceRightNullable,
+//              rightIsLateral,
               lateral);
       if (newRight != right) {
         join.setRight(newRight);
@@ -2234,7 +2237,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
           parentScope,
           usingScope,
           register,
-          ((SqlCall) node).operand(0),
+          ((SqlCall) node).operand(0), // this is where the drop actually happens since node is the lateral call and it's first operand is simply the inner subquery
           enclosingNode,
           alias,
           extendList,
@@ -2283,6 +2286,17 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
           enclosingNode,
           alias,
           forceNullable);
+
+        // This is the state after calling registerFrom on line 2235, lateral is set to true, but we're using the subquery
+      // instead of the lateral call. Attempted to rewarp the subquery and return but failing unit test
+
+//      if (lateral && kind == SqlKind.SELECT) {
+//        SqlNode lateralNode =
+//            SqlStdOperatorTable.LATERAL.createCall(POS, newNode);
+//
+//        return lateralNode;
+//      }
+
       return newNode;
 
     case OVER:
