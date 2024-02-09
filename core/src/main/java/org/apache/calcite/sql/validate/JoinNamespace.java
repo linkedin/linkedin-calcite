@@ -18,7 +18,9 @@ package org.apache.calcite.sql.validate;
 
 import org.apache.calcite.rel.type.RelDataType;
 import org.apache.calcite.rel.type.RelDataTypeFactory;
+import org.apache.calcite.sql.SqlCall;
 import org.apache.calcite.sql.SqlJoin;
+import org.apache.calcite.sql.SqlKind;
 import org.apache.calcite.sql.SqlNode;
 
 /**
@@ -39,10 +41,24 @@ class JoinNamespace extends AbstractNamespace {
   //~ Methods ----------------------------------------------------------------
 
   protected RelDataType validateImpl(RelDataType targetRowType) {
+    SqlNode left;
+    if (join.getLeft().getKind() == SqlKind.LATERAL) {
+      left = ((SqlCall) join.getLeft()).operand(0);
+    } else {
+      left = join.getLeft();
+    }
     RelDataType leftType =
-        validator.getNamespace(join.getLeft()).getRowType();
+        validator.getNamespace(left).getRowType();
+
+    SqlNode right;
+    if (join.getRight().getKind() == SqlKind.LATERAL) {
+      right = ((SqlCall) join.getRight()).operand(0);
+    } else {
+      right = join.getRight();
+    }
+
     RelDataType rightType =
-        validator.getNamespace(join.getRight()).getRowType();
+        validator.getNamespace(right).getRowType();
     final RelDataTypeFactory typeFactory = validator.getTypeFactory();
     switch (join.getJoinType()) {
     case LEFT:

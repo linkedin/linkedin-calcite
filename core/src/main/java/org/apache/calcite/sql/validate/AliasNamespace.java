@@ -20,6 +20,7 @@ import org.apache.calcite.rel.type.RelDataType;
 import org.apache.calcite.rel.type.RelDataTypeField;
 import org.apache.calcite.sql.SqlCall;
 import org.apache.calcite.sql.SqlIdentifier;
+import org.apache.calcite.sql.SqlKind;
 import org.apache.calcite.sql.SqlNode;
 import org.apache.calcite.sql.SqlNodeList;
 import org.apache.calcite.sql.fun.SqlStdOperatorTable;
@@ -66,8 +67,16 @@ public class AliasNamespace extends AbstractNamespace {
   protected RelDataType validateImpl(RelDataType targetRowType) {
     final List<String> nameList = new ArrayList<>();
     final List<SqlNode> operands = call.getOperandList();
-    final SqlValidatorNamespace childNs =
-        validator.getNamespace(operands.get(0));
+    final SqlValidatorNamespace childNs;
+
+    if (operands.get(0).getKind() == SqlKind.LATERAL) {
+      childNs =
+          validator.getNamespace(((SqlCall) operands.get(0)).operand(0));
+    } else {
+      childNs  =
+          validator.getNamespace(operands.get(0));
+    }
+
     final RelDataType rowType = childNs.getRowTypeSansSystemColumns();
     final List<SqlNode> columnNames = Util.skip(operands, 2);
     for (final SqlNode operand : columnNames) {

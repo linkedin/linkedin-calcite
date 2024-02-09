@@ -1587,6 +1587,10 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
 
   public RelDataType getValidatedNodeType(SqlNode node) {
     RelDataType type = getValidatedNodeTypeIfKnown(node);
+    if (node.getKind() == SqlKind.LATERAL) {
+      type = getValidatedNodeTypeIfKnown(((SqlCall) node).operand(0));
+    }
+
     if (type == null) {
       throw Util.needToImplement(node);
     } else {
@@ -2233,7 +2237,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
       return newNode;
 
     case LATERAL:
-      return registerFrom(
+      SqlNode sqlNode1 = registerFrom(
           parentScope,
           usingScope,
           register,
@@ -2243,6 +2247,25 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
           extendList,
           forceNullable,
           true);
+      return sqlNode1;
+//      call = (SqlCall) node;
+//      operand = call.operand(0);
+//      newOperand =
+//          registerFrom(
+//              parentScope,
+//              usingScope,
+//              register,
+//              operand, // this is where the drop actually happens since node is the lateral call and it's first operand is simply the inner subquery. I've attempted to simply pass in "node" here but leads to infinite recursion.
+//              enclosingNode,
+//              alias,
+//              extendList,
+//              forceNullable,
+//              true);
+//      if (newOperand != operand) {
+//        call.setOperand(0, newOperand);
+//      }
+//      scopes.put(node, parentScope);
+//      return node;
 
     case COLLECTION_TABLE:
       call = (SqlCall) node;
@@ -2290,12 +2313,12 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
         // This is the state after calling registerFrom on line 2235, lateral is set to true, but we're using the subquery
       // instead of the lateral call. Attempted to rewarp the subquery and return but failing unit test
 
-//      if (lateral && kind == SqlKind.SELECT) {
-//        SqlNode lateralNode =
-//            SqlStdOperatorTable.LATERAL.createCall(POS, newNode);
-//
-//        return lateralNode;
-//      }
+      if (lateral && kind == SqlKind.SELECT) {
+        SqlNode lateralNode =
+            SqlStdOperatorTable.LATERAL.createCall(POS, newNode);
+
+        return lateralNode;
+      }
 
       return newNode;
 
@@ -3135,6 +3158,9 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
     case UNNEST:
       validateUnnest((SqlCall) node, scope, targetRowType);
       break;
+    case LATERAL:
+      validateQuery(((SqlCall) node).operand(0), scope, targetRowType);
+      break;
     default:
       validateQuery(node, scope, targetRowType);
       break;
@@ -3142,7 +3168,11 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
 
     // Validate the namespace representation of the node, just in case the
     // validation did not occur implicitly.
-    getNamespace(node, scope).validate(targetRowType);
+    if (node.getKind() == SqlKind.LATERAL) {
+      getNamespace(((SqlCall) node).operand(0), scope).validate(targetRowType);
+    } else {
+      getNamespace(node, scope).validate(targetRowType);
+    }
   }
 
   protected void validateOver(SqlCall call, SqlValidatorScope scope) {
