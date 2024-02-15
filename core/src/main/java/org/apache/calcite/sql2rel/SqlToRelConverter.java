@@ -2084,20 +2084,8 @@ public class SqlToRelConverter {
               ((DelegatingScope) bb.scope).getParent());
       final Blackboard rightBlackboard =
           createBlackboard(rightScope, null, false);
-      if (left.getKind() == SqlKind.LATERAL) {
-        left = ((SqlCall) left).operand(0);
-      }
-      else if ((left.getKind() == SqlKind.AS && ((SqlCall) left).operand(0).getKind() == SqlKind.LATERAL)) {
-        left = ((SqlCall)((SqlCall) left).operand(0)).operand(0);
-      }
       convertFrom(leftBlackboard, left);
       RelNode leftRel = leftBlackboard.root;
-      if (right.getKind() == SqlKind.LATERAL) {
-        right = ((SqlCall) right).operand(0);
-      } else if ((right.getKind() == SqlKind.AS && ((SqlCall) right).operand(0).getKind() == SqlKind.LATERAL)) {
-        right = ((SqlCall)((SqlCall) right).operand(0)).operand(0);
-      }
-
       convertFrom(rightBlackboard, right);
       RelNode rightRel = rightBlackboard.root;
       JoinRelType convertedJoinType = convertJoinType(joinType);

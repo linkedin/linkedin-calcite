@@ -1115,6 +1115,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
       }
       // fall through
     case SNAPSHOT:
+    case LATERAL:
     case OVER:
     case COLLECTION_TABLE:
     case ORDER_BY:
@@ -2209,7 +2210,6 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
               null,
               null,
               forceRightNullable,
-//              rightIsLateral,
               lateral);
       if (newRight != right) {
         join.setRight(newRight);
@@ -2237,35 +2237,16 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
       return newNode;
 
     case LATERAL:
-      SqlNode sqlNode1 = registerFrom(
+      return registerFrom(
           parentScope,
           usingScope,
           register,
-          ((SqlCall) node).operand(0), // this is where the drop actually happens since node is the lateral call and it's first operand is simply the inner subquery. I've attempted to simply pass in "node" here but leads to infinite recursion.
+          ((SqlCall) node).operand(0),
           enclosingNode,
           alias,
           extendList,
           forceNullable,
           true);
-      return sqlNode1;
-//      call = (SqlCall) node;
-//      operand = call.operand(0);
-//      newOperand =
-//          registerFrom(
-//              parentScope,
-//              usingScope,
-//              register,
-//              operand, // this is where the drop actually happens since node is the lateral call and it's first operand is simply the inner subquery. I've attempted to simply pass in "node" here but leads to infinite recursion.
-//              enclosingNode,
-//              alias,
-//              extendList,
-//              forceNullable,
-//              true);
-//      if (newOperand != operand) {
-//        call.setOperand(0, newOperand);
-//      }
-//      scopes.put(node, parentScope);
-//      return node;
 
     case COLLECTION_TABLE:
       call = (SqlCall) node;
