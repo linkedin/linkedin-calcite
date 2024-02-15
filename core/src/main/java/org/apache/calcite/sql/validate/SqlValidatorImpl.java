@@ -1587,9 +1587,12 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
   }
 
   public RelDataType getValidatedNodeType(SqlNode node) {
-    RelDataType type = getValidatedNodeTypeIfKnown(node);
+    RelDataType type;
     if (node.getKind() == SqlKind.LATERAL) {
+      // Skip over LATERAL
       type = getValidatedNodeTypeIfKnown(((SqlCall) node).operand(0));
+    } else {
+      type = getValidatedNodeTypeIfKnown(node);
     }
 
     if (type == null) {
@@ -2115,7 +2118,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
         alias = call.operand(1).toString();
       }
       final boolean needAlias = call.operandCount() > 2;
-      expr = call.operand(0); // call the AS operator, first operand is lateral call
+      expr = call.operand(0);
       newExpr =
           registerFrom(
               parentScope,
@@ -2128,7 +2131,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
               forceNullable,
               lateral);
       if (newExpr != expr) {
-        call.setOperand(0, newExpr); // at this point newExpr is the inner subquery with the outer lateral dropped
+        call.setOperand(0, newExpr);
       }
 
       // If alias has a column list, introduce a namespace to translate
@@ -2171,7 +2174,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
       scopes.put(join, joinScope);
       final SqlNode left = join.getLeft();
       final SqlNode right = join.getRight();
-      final boolean rightIsLateral = isLateral(right); //unused variable i thought could be a bug that should be used in line 2208/2209 but that didnt work either
+      final boolean rightIsLateral = isLateral(right);
       boolean forceLeftNullable = forceNullable;
       boolean forceRightNullable = forceNullable;
       switch (join.getJoinType()) {
@@ -2291,13 +2294,10 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
           alias,
           forceNullable);
 
-        // This is the state after calling registerFrom on line 2235, lateral is set to true, but we're using the subquery
-      // instead of the lateral call. Attempted to rewarp the subquery and return but failing unit test
-
+      // Keep preceding "LATERAL" keyword from joins with inner SELECT subquery
       if (lateral && kind == SqlKind.SELECT) {
         SqlNode lateralNode =
             SqlStdOperatorTable.LATERAL.createCall(POS, newNode);
-
         return lateralNode;
       }
 
@@ -3107,7 +3107,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
 
   /**
    * Validates the FROM clause of a query, or (recursively) a child node of
-   * the FROM clause: AS, OVER, JOIN, VALUES, or sub-query.
+   * the FROM clause: AS, OVER, JOIN, LATERAL, VALUES, or sub-query.
    *
    * @param node          Node in FROM clause, typically a table or derived
    *                      table
@@ -3140,6 +3140,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
       validateUnnest((SqlCall) node, scope, targetRowType);
       break;
     case LATERAL:
+      // Validate subquery that LATERAL precedes
       validateQuery(((SqlCall) node).operand(0), scope, targetRowType);
       break;
     default:
@@ -3150,6 +3151,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
     // Validate the namespace representation of the node, just in case the
     // validation did not occur implicitly.
     if (node.getKind() == SqlKind.LATERAL) {
+      // Skip over fetching for LATERAL namespace since they are not registered, use subquery instead
       getNamespace(((SqlCall) node).operand(0), scope).validate(targetRowType);
     } else {
       getNamespace(node, scope).validate(targetRowType);

@@ -41,17 +41,14 @@ class JoinNamespace extends AbstractNamespace {
   //~ Methods ----------------------------------------------------------------
 
   protected RelDataType validateImpl(RelDataType targetRowType) {
-    SqlNode left;
-    if (join.getLeft().getKind() == SqlKind.LATERAL) {
-      left = ((SqlCall) join.getLeft()).operand(0);
-    } else {
-      left = join.getLeft();
-    }
     RelDataType leftType =
-        validator.getNamespace(left).getRowType();
+        validator.getNamespace(join.getLeft()).getRowType();
 
+    // Since LATERALS are used preceding subqueries appearing in FROM to allow the subquery to
+    // reference columns provided by preceding FROM items, LATERALS will only appear on the right side of a join.
     SqlNode right;
     if (join.getRight().getKind() == SqlKind.LATERAL) {
+      // Skip over fetching for LATERAL's name space since they are not registered
       right = ((SqlCall) join.getRight()).operand(0);
     } else {
       right = join.getRight();
