@@ -59,7 +59,6 @@ import org.apache.calcite.sql.SqlIntervalLiteral;
 import org.apache.calcite.sql.SqlIntervalQualifier;
 import org.apache.calcite.sql.SqlJoin;
 import org.apache.calcite.sql.SqlKind;
-import org.apache.calcite.sql.SqlLateralOperator;
 import org.apache.calcite.sql.SqlLiteral;
 import org.apache.calcite.sql.SqlMatchRecognize;
 import org.apache.calcite.sql.SqlMerge;
@@ -136,7 +135,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static org.apache.calcite.rel.rel2sql.SqlImplementor.*;
+import static org.apache.calcite.rel.rel2sql.SqlImplementor.POS;
 import static org.apache.calcite.sql.SqlUtil.stripAs;
 import static org.apache.calcite.util.Static.RESOURCE;
 
@@ -3151,8 +3150,9 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
     // Validate the namespace representation of the node, just in case the
     // validation did not occur implicitly.
     if (node.getKind() == SqlKind.LATERAL) {
-      // Skip over fetching for LATERAL namespace since they are not registered, use subquery instead
-      getNamespace(((SqlCall) node).operand(0), scope).validate(targetRowType);
+      // Skip over fetching for LATERAL namespace since they aren't registered, use subquery instead
+      getNamespace(((SqlCall) node).operand(0), scope)
+          .validate(targetRowType);
     } else {
       getNamespace(node, scope).validate(targetRowType);
     }
