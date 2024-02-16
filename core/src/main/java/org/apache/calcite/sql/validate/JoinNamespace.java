@@ -18,7 +18,9 @@ package org.apache.calcite.sql.validate;
 
 import org.apache.calcite.rel.type.RelDataType;
 import org.apache.calcite.rel.type.RelDataTypeFactory;
+import org.apache.calcite.sql.SqlCall;
 import org.apache.calcite.sql.SqlJoin;
+import org.apache.calcite.sql.SqlKind;
 import org.apache.calcite.sql.SqlNode;
 
 /**
@@ -41,8 +43,19 @@ class JoinNamespace extends AbstractNamespace {
   protected RelDataType validateImpl(RelDataType targetRowType) {
     RelDataType leftType =
         validator.getNamespace(join.getLeft()).getRowType();
+
+    // Since LATERALS are used preceding subqueries appearing in FROM to allow the subquery to
+    // reference columns provided by preceding FROM items, LATERALS will only appear on the right side of a join.
+    SqlNode right;
+    if (join.getRight().getKind() == SqlKind.LATERAL) {
+      // Skip over fetching for LATERAL's name space since they are not registered
+      right = ((SqlCall) join.getRight()).operand(0);
+    } else {
+      right = join.getRight();
+    }
+
     RelDataType rightType =
-        validator.getNamespace(join.getRight()).getRowType();
+        validator.getNamespace(right).getRowType();
     final RelDataTypeFactory typeFactory = validator.getTypeFactory();
     switch (join.getJoinType()) {
     case LEFT:

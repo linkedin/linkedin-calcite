@@ -1993,6 +1993,11 @@ public class SqlToRelConverter {
       return;
     }
 
+    // Skip over LATERAL conversion
+    if (from.getKind() == SqlKind.LATERAL) {
+      from = ((SqlCall) from).operand(0);
+    }
+
     final SqlCall call;
     final SqlNode[] operands;
     switch (from.getKind()) {

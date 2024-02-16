@@ -59,6 +59,7 @@ import org.apache.calcite.sql.SqlIntervalLiteral;
 import org.apache.calcite.sql.SqlIntervalQualifier;
 import org.apache.calcite.sql.SqlJoin;
 import org.apache.calcite.sql.SqlKind;
+import org.apache.calcite.sql.SqlLateralOperator;
 import org.apache.calcite.sql.SqlLiteral;
 import org.apache.calcite.sql.SqlMatchRecognize;
 import org.apache.calcite.sql.SqlMerge;
@@ -135,6 +136,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import static org.apache.calcite.rel.rel2sql.SqlImplementor.*;
 import static org.apache.calcite.sql.SqlUtil.stripAs;
 import static org.apache.calcite.util.Static.RESOURCE;
 
@@ -1113,6 +1115,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
       }
       // fall through
     case SNAPSHOT:
+    case LATERAL:
     case OVER:
     case COLLECTION_TABLE:
     case ORDER_BY:
@@ -1584,7 +1587,14 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
   }
 
   public RelDataType getValidatedNodeType(SqlNode node) {
-    RelDataType type = getValidatedNodeTypeIfKnown(node);
+    RelDataType type;
+    if (node.getKind() == SqlKind.LATERAL) {
+      // Skip over LATERAL
+      type = getValidatedNodeTypeIfKnown(((SqlCall) node).operand(0));
+    } else {
+      type = getValidatedNodeTypeIfKnown(node);
+    }
+
     if (type == null) {
       throw Util.needToImplement(node);
     } else {
@@ -2283,6 +2293,14 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
           enclosingNode,
           alias,
           forceNullable);
+
+      // Keep preceding "LATERAL" keyword from joins with inner SELECT subquery
+      if (lateral && kind == SqlKind.SELECT) {
+        SqlNode lateralNode =
+            SqlStdOperatorTable.LATERAL.createCall(POS, newNode);
+        return lateralNode;
+      }
+
       return newNode;
 
     case OVER:
@@ -3089,7 +3107,7 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
 
   /**
    * Validates the FROM clause of a query, or (recursively) a child node of
-   * the FROM clause: AS, OVER, JOIN, VALUES, or sub-query.
+   * the FROM clause: AS, OVER, JOIN, LATERAL, VALUES, or sub-query.
    *
    * @param node          Node in FROM clause, typically a table or derived
    *                      table
@@ -3121,6 +3139,10 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
     case UNNEST:
       validateUnnest((SqlCall) node, scope, targetRowType);
       break;
+    case LATERAL:
+      // Validate subquery that LATERAL precedes
+      validateQuery(((SqlCall) node).operand(0), scope, targetRowType);
+      break;
     default:
       validateQuery(node, scope, targetRowType);
       break;
@@ -3128,7 +3150,12 @@ public class SqlValidatorImpl implements SqlValidatorWithHints {
 
     // Validate the namespace representation of the node, just in case the
     // validation did not occur implicitly.
-    getNamespace(node, scope).validate(targetRowType);
+    if (node.getKind() == SqlKind.LATERAL) {
+      // Skip over fetching for LATERAL namespace since they are not registered, use subquery instead
+      getNamespace(((SqlCall) node).operand(0), scope).validate(targetRowType);
+    } else {
+      getNamespace(node, scope).validate(targetRowType);
+    }
   }
 
   protected void validateOver(SqlCall call, SqlValidatorScope scope) {
