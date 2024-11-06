@@ -17,13 +17,13 @@
 
 echo "!!This will change the pom.xml files and you will need to revert them. If you have local changes, exit now and stash them!!"
 
-while [ -z "$SONATYPE_USERNAME" ]; do
-  echo "Please provide your sonatype username"
-  read SONATYPE_USERNAME
+while [ -z "$SONATYPE_TOKEN_USERNAME" ]; do
+  echo "Please provide your sonatype token username"
+  read SONATYPE_TOKEN_USERNAME
 done
-while [ -z "$SONATYPE_PASSWORD" ]; do
-  echo "Please provide your sonatype password"
-  read SONATYPE_PASSWORD
+while [ -z "$SONATYPE_TOKEN_PASSWORD" ]; do
+  echo "Please provide your sonatype token password"
+  read SONATYPE_TOKEN_PASSWORD
   echo
 done
 while [ -z "$GPG_PASSWD" ]; do
@@ -52,4 +52,4 @@ mvn versions:set -DnewVersion="$BUILD_VERSION" -q -B
 mvn versions:commit -q -B
 
 echo "Publishing to maven central"
-MVN_DEPLOY_SONATYPE_USER=$SONATYPE_USERNAME MVN_DEPLOY_SONATYPE_PASSWORD=$SONATYPE_PASSWORD MVN_DEPLOY_GPG_PASSWD=$GPG_PASSWD eval 'mvn clean deploy -s .lipublish/publishSettings.xml -DskipTests -q -DretryFailedDeploymentCount=5'
+MVN_DEPLOY_SONATYPE_TOKEN_USERNAME=$SONATYPE_TOKEN_USERNAME MVN_DEPLOY_SONATYPE_TOKEN_PASSWORD=$SONATYPE_TOKEN_PASSWORD MVN_DEPLOY_GPG_PASSWD=$GPG_PASSWD eval 'mvn clean deploy -s .lipublish/publishSettings.xml -DskipTests -q -DretryFailedDeploymentCount=5'
