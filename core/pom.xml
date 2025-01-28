@@ -473,6 +473,10 @@ limitations under the License.
                   <shadedPattern>com.linkedin.coral.com.fasterxml.jackson</shadedPattern>
                 </relocation>
                 <relocation>
+                  <pattern>com.jayway</pattern>
+                  <shadedPattern>com.linkedin.coral.com.jayway</shadedPattern>
+                </relocation>
+                <relocation>
                   <pattern>org.apache.http</pattern>
                   <shadedPattern>com.linkedin.coral.org.apache.http</shadedPattern>
                 </relocation>
