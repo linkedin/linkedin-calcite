@@ -532,7 +532,7 @@ limitations under the License.
                 </filter>
               </filters>
               <shadedArtifactAttached>true</shadedArtifactAttached>
-              <shadedClassifierName>shaded-all</shadedClassifierName>
+              <shadedClassifierName>shaded</shadedClassifierName>
             </configuration>
           </execution>
 
