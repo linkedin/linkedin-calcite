@@ -20,7 +20,7 @@ limitations under the License.
   <parent>
     <groupId>com.linkedin.calcite</groupId>
     <artifactId>calcite</artifactId>
-    <version>1.21.0.140</version>
+    <version>2.0.0</version>
   </parent>
 
   <licenses>
@@ -33,7 +33,7 @@ limitations under the License.
 
   <artifactId>calcite-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.21.0.140</version>
+  <version>2.0.0</version>
   <name>Calcite Core</name>
   <description>Core Calcite APIs and engine.</description>
 
@@ -444,82 +444,7 @@ limitations under the License.
         <version>3.1.1</version>
         <executions>
           <execution>
-            <!-- Note we produce 'shaded' and 'shaded-all' artifacts. -->
             <id>shaded</id>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <relocations>
-                <relocation>
-                  <pattern>com.google.protobuf</pattern>
-                  <shadedPattern>com.linkedin.coral.com.google.protobuf</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.google.thirdparty</pattern>
-                  <shadedPattern>com.linkedin.coral.com.google.thirdparty</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>google.protobuf</pattern>
-                  <shadedPattern>com.linkedin.coral.google.protobuf</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.google.common</pattern>
-                  <shadedPattern>com.linkedin.coral.com.google.common</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.fasterxml.jackson</pattern>
-                  <shadedPattern>com.linkedin.coral.com.fasterxml.jackson</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.apache.http</pattern>
-                  <shadedPattern>com.linkedin.coral.org.apache.http</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.slf4j</pattern>
-                  <shadedPattern>com.linkedin.coral.org.slf4j</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.esri</pattern>
-                  <shadedPattern>com.linkedin.coral.com.esri</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.pentaho</pattern>
-                  <shadedPattern>com.linkedin.coral.org.pentaho</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.apache.commons.codec</pattern>
-                  <shadedPattern>com.linkedin.coral.org.apache.commons.codec</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.apache.commons.logging</pattern>
-                  <shadedPattern>com.linkedin.coral.org.apache.commons.logging</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>javax.annotation</pattern>
-                  <shadedPattern>com.linkedin.coral.javax.annotation</shadedPattern>
-                </relocation>
-              </relocations>
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>mozilla/public-suffix-list.txt</exclude>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-              <shadedArtifactAttached>true</shadedArtifactAttached>
-              <shadedClassifierName>shaded</shadedClassifierName>
-            </configuration>
-          </execution>
-
-          <execution>
-            <!-- Note we produce 'shaded' and 'shaded-all' artifacts. -->
-            <id>shaded-all</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
