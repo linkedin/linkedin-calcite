@@ -752,7 +752,7 @@ public class JdbcTest {
     final String driverVersion = metaData.getDriverVersion();
     final int driverMajor = metaData.getDriverMajorVersion();
     final int driverMinor = metaData.getDriverMinorVersion();
-    assertEquals(2, driverMajor);
+    assertEquals(1, driverMajor);
     assertTrue(driverMinor >= 0 && driverMinor < 30);
 
     assertEquals("Calcite", metaData.getDatabaseProductName());
@@ -779,7 +779,7 @@ public class JdbcTest {
         || driverVersion.endsWith("-SNAPSHOT")
             && driverVersion.startsWith(mm(driverMajor, driverMinor + 1)));
 
-    assertTrue(databaseVersion.startsWith("2."));
+    assertTrue(databaseVersion.startsWith("1."));
     assertTrue(databaseVersion.split("\\.").length >= 2);
     assertTrue(databaseVersion.equals(mm(databaseMajor, databaseMinor))
         || databaseVersion.startsWith(mm(databaseMajor, databaseMinor) + ".")
