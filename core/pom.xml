@@ -61,7 +61,7 @@ limitations under the License.
   <properties>
     <top.dir>${project.basedir}/..</top.dir>
     <build.timestamp>${maven.build.timestamp}</build.timestamp>
-    <shadeBase>com.linkedin.coral.relocated</shadeBase>
+    <shadeBase>com.linkedin.relocated</shadeBase>
   </properties>
 
   <dependencies>
