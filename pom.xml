@@ -53,6 +53,27 @@ limitations under the License.
     </mailingList>
   </mailingLists>
 
+  <developers>
+    <developer>
+      <name>Limian Zhang</name>
+      <email>razhang@linkedin.com</email>
+      <organization>LinkedIn</organization>
+      <organizationUrl>http://www.linkedin.com</organizationUrl>
+    </developer>
+    <developer>
+      <name>Jiefan Li</name>
+      <email>jiefli@linkedin.com</email>
+      <organization>LinkedIn</organization>
+      <organizationUrl>http://www.linkedin.com</organizationUrl>
+    </developer>
+    <developer>
+      <name>Kevin Ge</name>
+      <email>kgei@linkedin.com</email>
+      <organization>LinkedIn</organization>
+      <organizationUrl>http://www.linkedin.com</organizationUrl>
+    </developer>
+  </developers>
+
   <properties>
     <!-- Update this number when syncing with a new release of Apache Calcite -->
     <calciteVersion>1.21.0</calciteVersion>
