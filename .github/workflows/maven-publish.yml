@@ -28,7 +28,7 @@ jobs:
       with:
         java-version: '8'
         distribution: 'temurin'
-        server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
+        server-id: central # Value of the distributionManagement/repository/id field of the pom.xml
 
     - name: Import GPG key
       id: import_gpg
