@@ -134,7 +134,11 @@ abstract class CalciteConnectionImpl
               }
             };
       }
-      this.typeFactory = new JavaTypeFactoryImpl(typeSystem);
+      if ("com.linkedin.coral.common.HiveTypeSystem".equals(info.get("typeSystem"))) {
+        this.typeFactory = new CoralJavaTypeFactoryImpl(typeSystem);
+      } else {
+        this.typeFactory = new JavaTypeFactoryImpl(typeSystem);
+      }
     }
     this.rootSchema =
         Objects.requireNonNull(rootSchema != null
